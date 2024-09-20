@@ -62,9 +62,9 @@ class ArgParser:
 
 class StartProcedures:
     @staticmethod
-    def launch_bot(name: str):
+    def launch_bot(**kwargs):
         bm = bot_manager.BotManager()
-        bm.init_bot(name)
+        bm.init_bot(**kwargs)
         bm.run_bot()
 
 
