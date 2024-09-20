@@ -13,7 +13,7 @@ class BotManager:
         self.json_manager.load_from_file()
         self.bot_man_props.load_from_file()
         self.log = Logger(module_prefix="Bot Manager")
-        self.__env_val = dotenv_values()
+        self.__env_val = dotenv_values(self.bot_man_props[".env"])
         self.bot = None
         self.log.printf(self.bot_man_props["init_bm"])
 
@@ -21,7 +21,7 @@ class BotManager:
         command_prefix = self.json_manager["command_prefix"]
         self.log.printf(self.bot_man_props["init_bot"])
         intents = disnake.Intents.all()
-        self.bot = SmartBot(intents=intents, command_prefix=command_prefix, *kwargs)
+        self.bot = SmartBot(intents=intents, command_prefix=command_prefix, **kwargs)
 
         for cog in self.json_manager["cogs"]:
             self.log.printf(self.bot_man_props["import_cog"].format(

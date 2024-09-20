@@ -78,7 +78,6 @@ class Main:
         arg_parser.parse_args(self, StartProcedures)
         if arg_parser.code:
             raise FactoryArgumentError(arg_parser.code, arg_parser.error_arg)
-        print(arg_parser.code)
         for i in range(len(self.func_args)):
             self.start_func[i](**self.func_args[i])
 
