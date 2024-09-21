@@ -1,7 +1,7 @@
 {
   "command_prefix": ".",
   "dynamic_config_file_name": "em.json",
-  "cogs": ["cogs.Main", "cogs.DynamicConfig.DynamicConfig"],
+  "cogs": ["cogs.Main", "cogs.DynamicConfig"],
   "phrases": {
     "start" : "multiline\n> Successful starting\n> I logged as {user}\n> Starting during: {during_time}"
   },

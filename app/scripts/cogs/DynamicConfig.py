@@ -4,6 +4,7 @@ from disnake.ext import commands
 from disnake import ApplicationCommandInteraction
 from app.scripts.components.jsonmanager import JsonManager, AddressType
 from app.scripts.components.smartdisnake import SmartBot
+from functools import wraps as wrapper_func
 
 
 class ValueConvertorFromUser:
@@ -63,6 +64,29 @@ class DynamicConfigShape(commands.Cog):
         to
         {par: test}
         """
+
+    @staticmethod
+    def is_cfg_setup(*params, echo=True):
+        def decorator(function):
+            @wrapper_func(function)
+            async def wrapper(self, *args, **kwargs):
+                output = ""
+                for par in params:
+                    if self.bot.props[f"dynamic_config/{par}"] is None:
+                        output = par
+                        break
+                if not output:
+                    await function(self, *args, **kwargs)
+                    return
+                output = f"Parameter \"{output}\" not set. Func can't start correctly"
+                self.bot.log.printf(output, LogType.WARN)
+                if echo:
+                    inter = kwargs["inter"]
+                    await inter.response.send_message(output)
+
+            return wrapper
+        return decorator
+
     def __get_dynamic_config__(self) -> dict[str, Any]:
         dyn_buffer = self.dynamic_json.get_buffer()
         dynamic_config = {}
