@@ -1,8 +1,9 @@
 from disnake.ext import commands
+from app.scripts.components.smartdisnake import SmartBot
 
 
 class Main(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: SmartBot):
         self.bot = bot
 
     @commands.slash_command(name="ping",
@@ -14,5 +15,5 @@ class Main(commands.Cog):
         await inter.response.send_message("Successful request")
 
 
-def setup(bot: commands.Bot):
+def setup(bot: SmartBot):
     bot.add_cog(Main(bot))
