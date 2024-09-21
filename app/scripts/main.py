@@ -1,6 +1,8 @@
 import sys
 import os
 from factory.errors import FactoryArgumentError
+from typing import Any
+from json import loads
 sys.path.insert(1, os.path.join(sys.path[0].replace("/app/scripts", "")))
 import bot_manager
 
@@ -22,6 +24,17 @@ class ArgParser:
         self.func_count = -1
         self.error_arg = ""
         self.code = 0
+
+    # convert sub argument value to right data type
+    @staticmethod
+    def __convert_sub_arg(value: str) -> Any:
+        if value.isdigit():
+            return int(value)
+        if value.replace('.', '', 1).isdigit():
+            return float(value)
+        if value[0] == "[" or value[0] == "{":
+            return loads(value)
+        return value
 
     def parse_args(self, main_obj, procs_obj) -> int:
         # start parsing
@@ -45,7 +58,7 @@ class ArgParser:
                     self.code = 2
                     break
                 pd_arg = arg.split("=")
-                main_obj.func_args[self.func_count][pd_arg[0][2:]] = pd_arg[1]
+                main_obj.func_args[self.func_count][pd_arg[0][2:]] = self.__convert_sub_arg(pd_arg[1])
 
             else:
                 self.func_count += 1
