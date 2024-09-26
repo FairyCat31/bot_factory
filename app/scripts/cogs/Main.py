@@ -7,7 +7,7 @@ class Main(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="ping",
-                            description="Проверка респонса от бота")
+                            description="Проверка ответа от бота")
     @commands.default_member_permissions(administrator=True)
     async def ping(self, inter):
         author = inter.author
