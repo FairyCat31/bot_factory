@@ -76,8 +76,9 @@ class ArgParser:
 
 class StartProcedures:
     @staticmethod
-    def launch_bot(**kwargs):
-        bm = bot_manager.BotManager()
+    def launch_bot(debug_mode: bool = False, **kwargs):
+        st_params = {"debug_mode": debug_mode}
+        bm = bot_manager.BotManager(st_params)
         bm.init_bot(**kwargs)
         bm.run_bot()
 
@@ -110,10 +111,10 @@ class StartProcedures:
         jsm.set_buffer(b)
         jsm.write_in_file()
 
-    @staticmethod
-    def test():
-        from app.scripts.test import MainTest
-        MainTest().main()
+    # @staticmethod
+    # def test():
+    #     from app.scripts.test import MainTest
+    #     MainTest().main()
 
 
 class Main:
