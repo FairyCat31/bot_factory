@@ -8,11 +8,12 @@ from components.smartdisnake import SmartBot
 
 
 class BotManager:
-    def __init__(self, debug: dict):
+    def __init__(self, debug_mode: bool = True, advanced_logging: bool = True, **kwargs):
         # init logger and redirect standard err and out streams to logger
-        self.log = Logger(module_prefix="Bot Manager", debug_mess=debug["debug_mode"])
-        sys.stderr = ErrorHandler(self.log)
-        sys.stdout = PrintHandler(self.log, debug_mess=debug["debug_mode"])
+        self.log = Logger(module_prefix="Bot Manager", debug_mess=debug_mode)
+        if advanced_logging:
+            sys.stderr = ErrorHandler(self.log)
+            sys.stdout = PrintHandler(self.log, debug_mess=debug_mode)
         self.json_manager = JsonManager(AddressType.FILE, "bot_properties.json")
         self.bot_man_props = JsonManager(AddressType.FILE, "factory.json")
         self.json_manager.load_from_file()

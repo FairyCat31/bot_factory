@@ -76,9 +76,8 @@ class ArgParser:
 
 class StartProcedures:
     @staticmethod
-    def launch_bot(debug_mode: bool = False, **kwargs):
-        st_params = {"debug_mode": debug_mode}
-        bm = bot_manager.BotManager(st_params)
+    def launch_bot(**kwargs):
+        bm = bot_manager.BotManager(**kwargs)
         bm.init_bot(**kwargs)
         bm.run_bot()
 

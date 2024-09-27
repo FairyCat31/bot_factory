@@ -17,9 +17,9 @@ BTN_STYLE_MAP = {
 
 class SmartBot(commands.Bot):
 
-    def __init__(self, name: str, *args, **kwargs):
+    def __init__(self, name: str, **kwargs):
         self.start_time = time()
-        super().__init__(*args, **kwargs)
+        super().__init__(intents=kwargs["intents"], command_prefix=kwargs["command_prefix"])
         self.name = name
         self.props = JsonManager(AddressType.FILE, "bot_properties.json")
         self.props.load_from_file()
