@@ -6,7 +6,7 @@ from colorama import init, Fore, Style
 init()
 
 
-VERSION = 2
+VERSION = 2.0000
 
 
 class LogType:
@@ -24,15 +24,15 @@ class Colors:
     """
     Color themes for logger output
     """
-    time = f"{Style.BRIGHT}[{Fore.CYAN}{{now_time}}{Fore.RESET}] "
-    name = f"[{Fore.GREEN}{{name}}{Fore.RESET}] "
+    time = f"{Style.BRIGHT}[{Fore.CYAN}{{now_time}}{Fore.RESET}]"
+    name = f"[{Fore.GREEN}{{name}}{Fore.RESET}]"
     log_types = ["INFO ", "DEBUG", "WARN ", "ERROR", "FATAL"]
     color_log_types = [
-        f"{Style.BRIGHT}[{Fore.CYAN}INFO {Fore.RESET}] ",
-        f"{Style.BRIGHT}[{Fore.GREEN}DEBUG{Fore.RESET}] ",
-        f"{Style.BRIGHT}[{Fore.YELLOW}WARN {Fore.RESET}] ",
-        f"{Style.BRIGHT}[{Fore.RED}ERROR{Fore.RESET}] ",
-        f"{Style.BRIGHT}[{Fore.RED}FATAL{Fore.RESET}] "]
+        f"{Style.BRIGHT}[{Fore.CYAN}INFO {Fore.RESET}]",
+        f"{Style.BRIGHT}[{Fore.GREEN}DEBUG{Fore.RESET}]",
+        f"{Style.BRIGHT}[{Fore.YELLOW}WARN {Fore.RESET}]",
+        f"{Style.BRIGHT}[{Fore.RED}ERROR{Fore.RESET}]",
+        f"{Style.BRIGHT}[{Fore.RED}FATAL{Fore.RESET}]"]
     color_line = ["{line}", "{line}", "{line}", "{line}", f"{Fore.RED}{{line}}"]
 
 
@@ -40,7 +40,7 @@ class Colors:
 class Logger:
     def __init__(self, name: str, debug_mess: int = None,  out_stream: TextIO = None):
         # get conf to logger
-        self.cfg = JsonManager(AddressType.FILE, "cfg.json")
+        self.cfg = JsonManager(AddressType.FILE, "logger_conf.json")
         self.cfg.load_from_file()
         self.out_stream = out_stream
         if out_stream is None:
@@ -136,7 +136,6 @@ class ErrorHandler:
         pass
 
     def write(self, message: str):
-        print(">>>" + message + "<<<")
         if not message:
             return
         self._err_text += message
