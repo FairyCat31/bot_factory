@@ -98,6 +98,10 @@ class Logger:
             # add text to file
             self.__add_note(f_line, now_date)
 
+    def println(self, *lines: str, log_type: int = 0, end: str = "\n", log_text_in_file: bool = True):
+        for line in lines:
+            self.printf(line, log_type=log_type, end=end, log_text_in_file=log_text_in_file)
+
 
 class PrintHandler:
     def __init__(self, logger: Logger, orig_out_stream: TextIO = stdout,
