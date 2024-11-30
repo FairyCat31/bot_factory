@@ -118,7 +118,7 @@ class JsonManager:
 class JsonManagerWithCrypt(JsonManager):
     def __init__(self, address_type: str,
                  address: str,
-                 crypt_key: bytes = None):
+                 crypt_key: bytes | None = None):
         """
         Manager for working json files with crypt technologies
         """
@@ -126,14 +126,14 @@ class JsonManagerWithCrypt(JsonManager):
         super().__init__(address_type=address_type, address=address, smart_create=False)
         self._crypter = self.__crypter_init(crypt_key)
 
-    def __crypter_init(self, crypt_key: bytes) -> CrypterDict:
+    def __crypter_init(self, crypt_key: bytes | None) -> CrypterDict:
         if not crypt_key:
             env_vars = dotenv_values(self.json_config["env_with_crypt_key"])
             str_crypt_key = env_vars["DEFAULT_CRYPT_KEY"]
             crypt_key = str.encode(str_crypt_key, encoding="utf-8")
-
+            del env_vars, str_crypt_key
         crypter = CrypterDict(crypt_key=crypt_key)
-        del env_vars, str_crypt_key, crypt_key
+        del crypt_key
         return crypter
 
     def write_in_file(self) -> None:
