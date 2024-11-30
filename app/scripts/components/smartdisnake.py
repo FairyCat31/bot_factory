@@ -1,11 +1,17 @@
+import asyncio
 from disnake.ui import Modal, TextInput, Button, View
 from typing import List, Dict
 from disnake.ext import commands
 from disnake import Embed, ButtonStyle
 from time import time
 from app.scripts.components.logger import Logger, LogType
+from app.scripts.components.logger import VERSION as L_VERSION
 from app.scripts.components.jsonmanager import JsonManager, AddressType
+from app.scripts.factory.sysFuncs import check_requirements
+from typing import Coroutine
 
+
+REQS = [("logger", 2, L_VERSION)]
 BTN_STYLE_MAP = {
     1: ButtonStyle.primary,
     2: ButtonStyle.secondary,
@@ -15,23 +21,33 @@ BTN_STYLE_MAP = {
 }
 
 
-class SmartBot(commands.Bot):
+check_requirements(REQS)
 
+
+class SmartBot(commands.Bot):
     def __init__(self, name: str, **kwargs):
         self.start_time = time()
         super().__init__(intents=kwargs["intents"], command_prefix=kwargs["command_prefix"])
         self.name = name
+        self._async_tasks_for_queue = []
         self.props = JsonManager(AddressType.FILE, "bot_properties.json")
         self.props.load_from_file()
-        self.log = Logger(module_prefix=name)
+        self.log = Logger(name=name)
 
     def __repr__(self):
         return self.name
 
+    def add_async_task(self, target: Coroutine) -> None:
+        self._async_tasks_for_queue.append(target)
+
+    async def start_async_tasks(self):
+        await asyncio.gather(*self._async_tasks_for_queue)
+
     async def on_ready(self):
         end_time = time()
         delta_time = end_time - self.start_time
-        self.log.printf(self.props["phrases/start"].format(user=self.user, during_time=delta_time))
+        self.log.println(self.props["phrases/start"].format(user=self.user, during_time=delta_time).split("\n"))
+        await asyncio.create_task(self.start_async_tasks())
 
     async def on_command_error(self, context: commands.Context, exception: commands.errors.CommandError) -> None:
         self.log.printf("Ignoring command -> %s" % context.message.content,
