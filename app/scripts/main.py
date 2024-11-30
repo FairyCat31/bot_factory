@@ -1,6 +1,6 @@
 import sys
 import os
-from factory.errors import FactoryArgumentError
+from factory.errors import FactoryStartArgumentError
 from typing import Any
 from json import loads
 from json import dumps
@@ -29,12 +29,17 @@ class ArgParser:
     # convert sub argument value to right data type
     @staticmethod
     def __convert_sub_arg(value: str) -> Any:
+
         if value.isdigit():
             return int(value)
-        if value.replace('.', '', 1).isdigit():
+        elif value.replace('.', '', 1).isdigit():
             return float(value)
-        if value[0] == "[" or value[0] == "{":
+        elif value[0] == "[" or value[0] == "{":
             return loads(value)
+        elif value.lower() in ["true", "yes", "y"]:
+            return True
+        elif value.lower() in ["false", "no", "n"]:
+            return False
         return value
 
     def parse_args(self, main_obj, procs_obj) -> int:
@@ -110,11 +115,6 @@ class StartProcedures:
         jsm.set_buffer(b)
         jsm.write_in_file()
 
-    # @staticmethod
-    # def test():
-    #     from app.scripts.test import MainTest
-    #     MainTest().main()
-
 
 class Main:
     def __init__(self):
@@ -125,7 +125,7 @@ class Main:
         arg_parser = ArgParser()
         arg_parser.parse_args(self, StartProcedures)
         if arg_parser.code:
-            raise FactoryArgumentError(arg_parser.code, arg_parser.error_arg)
+            raise FactoryStartArgumentError(arg_parser.code, arg_parser.error_arg)
         for i in range(len(self.func_args)):
             self.start_func[i](**self.func_args[i])
 
