@@ -1,14 +1,14 @@
 """
-Error classes for bot constructor
+Error classes for bot factory
 """
 
 
-class FactoryArgumentError(Exception):
+class FactoryStartArgumentError(Exception):
     """Exception raised for errors in the input factory arguments
     Attributes:
-        code -- code error
+        code      -- code error
         error_arg -- arg which raise error
-        message -- explanation of the error
+        message   -- explanation of the error
     """
     def __init__(self, code: int, error_arg: str = "", message: str = ""):
         self.message = message
@@ -26,3 +26,15 @@ class FactoryArgumentError(Exception):
                 self.message += f" >>> {error_arg}"
 
         super().__init__(self.message)
+
+
+class FactoryRequirementVersionError(Exception):
+    """Exception for error in the module requirements version
+    Attributes:
+        code - code error
+        module_name - name of module which version is incorrect"""
+
+    def __init__(self, module_name: str, n_ver: float | int, h_ver: float | int):
+        msg = (f"Version of the module \"{module_name}\" is incorrect." +
+               f" Need version ({n_ver}.x ver.) | Have ({h_ver} ver.)")
+        super().__init__(msg)
