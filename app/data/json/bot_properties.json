@@ -1,9 +1,17 @@
 {
   "command_prefix": ".",
-  "dynamic_config_file_name": "em.json",
+  "dynamic_config_file_name": "dyn_conf.json",
   "cogs": ["cogs.Main", "cogs.DynamicConfig"],
+  "def_phrases": {
+    "start" : ["Successful starting", "I logged as {user}", "Starting during: {during_time}"],
+    "FormatErrorDynConfig" : "Ошибка обновления параметра.\\nНе удалось преобразовать {value} в {data_type_need}",
+    "ConsoleFormatErrorDynConfig": "IncorrectTypeParameter: Failed to update parameter value",
+    "ConsoleEditInfo": "Параметр {parameter} изменён ---> {convert_value}",
+    "RunErrorDynConfig": "Parameter \"%s\" not set. Func can't start correctly",
+    "PermErrorDynConfig": "У вас нету прав использовать эту команду",
+    "ping": "Успешно передано"
+  },
   "phrases": {
-    "start" : "multiline\n> Successful starting\n> I logged as {user}\n> Starting during: {during_time}"
   },
   "buttons": {
   },
@@ -12,8 +20,10 @@
   "modals": {
   },
   "cmds": {
-    "set_cfg": {"name": "cfg_set_param", "description": "Задать новое значение параметру"},
-    "del_cfg": {"name": "cfg_del_param", "description": "Cбросить настройки"},
-    "show_cfg": {"name": "cfg_show", "description": "Показать текущие настройки"}
+    "main_cfg": {"name": "config", "description": "Команда для настройки бота"},
+    "set_cfg": {"name": "set", "description": "Изменить настройки бота"},
+    "del_cfg": {"name": "reset", "description": "Сбросить настройки/настройку бота"},
+    "show_cfg": {"name": "show", "description": "Показать настройки бота"},
+    "main_ping": {"name": "ping", "description":  "Проверка ответа от бота"}
   }
 }

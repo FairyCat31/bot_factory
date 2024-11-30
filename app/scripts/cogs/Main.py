@@ -6,14 +6,22 @@ class Main(commands.Cog):
     def __init__(self, bot: SmartBot):
         self.bot = bot
 
-    @commands.slash_command(name="ping",
-                            description="Проверка ответа от бота")
-    @commands.default_member_permissions(administrator=True)
     async def ping(self, inter):
         author = inter.author
         print(author.name, author.nick, author.global_name)
-        await inter.response.send_message("Successful request")
+        await inter.response.send_message(self.bot.props["def_phrases/ping"])
+
+
+def build(bot: SmartBot):
+    class BuildMain(Main):
+        @commands.slash_command(**bot.props["cmds/main_ping"])
+        @commands.default_member_permissions(administrator=True)
+        async def ping(self, inter):
+            await super().ping(inter)
+
+    return BuildMain
 
 
 def setup(bot: SmartBot):
-    bot.add_cog(Main(bot))
+    build_class = build(bot)
+    bot.add_cog(build_class(bot))
