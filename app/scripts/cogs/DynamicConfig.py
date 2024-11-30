@@ -120,14 +120,13 @@ class DynamicConfigShape(commands.Cog):
 
     #  generate beautiful table for printing
     def __generate_values_table(self) -> str:
-        len_key_column = len(max(self.dynamic_json.keys()))
-        len_value_column = len(max(self.dynamic_json.values()))
-        line_format = "| {:^%i} | {:^%i} |" % (len_key_column, len_value_column)
-        splitter = "\n+-{:^%i}-+-{:^%i}-+\n" % (len_key_column, len_value_column)
-        splitter = splitter.format("-", "-")
-        result = splitter[1:] + line_format.format('parameter', 'value') + splitter
-        lines = [line_format.format(*row) for row in self.dynamic_json.items()]
-        result += splitter.join(lines) + splitter[:-1]
+        dynamic_config = self.__get_dynamic_config()
+        len_key_column = len(max(map(str, dynamic_config.keys()), key=len))
+        len_value_column = len(max(map(str, dynamic_config.values()), key=len))
+        line_format = "{:<%i} {:<%i}" % (len_key_column + 5, len_value_column + 5)
+        result = line_format.format('parameter', 'value') + "\n"
+        lines = [line_format.format(key, str(value)) for key, value in dynamic_config.items()]
+        result += "\n".join(lines)
         return result
 
     async def config_set_param(self, inter: ApplicationCommandInteraction,

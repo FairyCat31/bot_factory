@@ -46,7 +46,7 @@ class SmartBot(commands.Bot):
     async def on_ready(self):
         end_time = time()
         delta_time = end_time - self.start_time
-        self.log.println(self.props["phrases/start"].format(user=self.user, during_time=delta_time).split("\n"))
+        self.log.println(*self.props["def_phrases/start"].format(user=self.user, during_time=delta_time).split("\n"))
         await asyncio.create_task(self.start_async_tasks())
 
     async def on_command_error(self, context: commands.Context, exception: commands.errors.CommandError) -> None:
