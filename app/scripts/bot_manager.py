@@ -2,20 +2,13 @@ import disnake
 from dotenv import dotenv_values
 from components.jsonmanager import JsonManager, AddressType
 from components.logger import Logger, PrintHandler, ErrorHandler
-from components.logger import VERSION as L_VERSION
 import sys
 from components.smartdisnake import SmartBot
-from factory.sysFuncs import check_requirements
 # from console_manager import Console
-
-
-REQS = [("logger", 2, L_VERSION)]
 
 
 class BotManager:
     def __init__(self, debug_mode: bool = True, advanced_logging: bool = True, **kwargs):
-        # check version of the files
-        check_requirements(REQS)
         # init logger and redirect standard err and out streams to logger
         self.log = Logger(name="Bot Manager", debug_mess=debug_mode)
         self._debug_mode = debug_mode
