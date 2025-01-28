@@ -5,13 +5,14 @@ from disnake.ext import commands
 from disnake import Embed, ButtonStyle
 from time import time
 from app.scripts.components.logger import Logger, LogType
-from app.scripts.components.logger import VERSION as L_VERSION
 from app.scripts.components.jsonmanager import JsonManager, AddressType
-from app.scripts.factory.sysFuncs import check_requirements
 from typing import Coroutine
+# import importlib.util
+# import importlib.machinery
+# import sys
+# from disnake.ext.commands import errors
 
 
-REQS = [("logger", 2, L_VERSION)]
 BTN_STYLE_MAP = {
     1: ButtonStyle.primary,
     2: ButtonStyle.secondary,
@@ -19,9 +20,6 @@ BTN_STYLE_MAP = {
     4: ButtonStyle.danger,
     5: ButtonStyle.success
 }
-
-
-check_requirements(REQS)
 
 
 class SmartBot(commands.Bot):
@@ -34,8 +32,34 @@ class SmartBot(commands.Bot):
         self.props.load_from_file()
         self.log = Logger(name=name)
 
-    def __repr__(self):
-        return self.name
+    # def _load_from_module_spec(self, spec: importlib.machinery.ModuleSpec, key: str) -> None:
+    #     # precondition: key not in self.__extensions
+    #     lib = importlib.util.module_from_spec(spec)
+    #     sys.modules[key] = lib
+    #     try:
+    #         spec.loader.exec_module(lib)  # type: ignore
+    #     except Exception as e:
+    #         del sys.modules[key]
+    #         raise errors.ExtensionFailed(key, e) from e
+    #
+    #     try:
+    #         m_version =
+    #
+    #     try:
+    #         setup = lib.setup
+    #     except AttributeError:
+    #         del sys.modules[key]
+    #         raise errors.NoEntryPointError(key) from None
+    #
+    #     try:
+    #         setup(self)
+    #     except Exception as e:
+    #         del sys.modules[key]
+    #         self._remove_module_references(lib.__name__)
+    #         self._call_module_finalizers(lib, key)
+    #         raise errors.ExtensionFailed(key, e) from e
+    #     else:
+    #         self.__extensions[key] = lib
 
     def add_async_task(self, target: Coroutine) -> None:
         self._async_tasks_for_queue.append(target)
