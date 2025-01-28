@@ -8,6 +8,7 @@ sys.path.insert(1, os.path.join(sys.path[0].replace("/app/scripts", "")))
 import bot_manager
 from components.jsonmanager import AddressType, JsonManagerWithCrypt
 
+
 __all__ = [
     "Main"
 ]
@@ -114,6 +115,10 @@ class StartProcedures:
             b = {}
         jsm.set_buffer(b)
         jsm.write_in_file()
+
+    @staticmethod
+    def test():
+        pass
 
 
 class Main:
