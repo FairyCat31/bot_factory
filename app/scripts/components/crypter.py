@@ -3,9 +3,12 @@ from json import loads, dumps
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.backends import default_backend
+from os import urandom
+import hashlib
 
 
-VERSION = 2
+def gen_salt(size: int = 32) -> bytes:
+    return urandom(size)
 
 
 class Crypter:
@@ -76,6 +79,7 @@ class CrypterDict(Crypter):
         Dict -> encrypt bytes
 
         """
+        print(type(dict_for_encrypt))
         dict_as_str = dumps(dict_for_encrypt)  # convert data type of dict to str
         result = super().str_encrypt(dict_as_str)  # convert to bytes + encrypt
         return result
@@ -175,3 +179,18 @@ class AsymmetricCrypterDict(AsymmetricCrypter):
         result_in_str = super().str_decrypt(dict_for_decrypt)  # decrypt + convert to str
         result = loads(result_in_str)  # convert data type of str to dict
         return result
+
+
+class Hasher:
+    def __init__(self, hash_name: str, salt: bytes | int = None):
+        self.hash_name = hash_name
+
+        # setting salt
+        t_salt = type(salt)
+        if t_salt is bytes:
+            self.salt = salt
+        else:
+            self.salt = gen_salt(salt if t_salt is int else 32)
+
+    def data_hash(self, data: bytes, iters: int = 100):
+        return hashlib.pbkdf2_hmac(self.hash_name, data, self.salt, iters)
