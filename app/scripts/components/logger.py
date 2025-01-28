@@ -1,12 +1,11 @@
 from datetime import datetime
 from app.scripts.components.jsonmanager import JsonManager, AddressType
-from sys import stdout
+from sys import stdout, path as sys_path
 from typing import TextIO
 from colorama import init, Fore, Style
 init()
 
-
-VERSION = 2.0000
+launch_path = sys_path[1]
 
 
 class LogType:
@@ -33,7 +32,7 @@ class Colors:
         f"{Style.BRIGHT}[{Fore.YELLOW}WARN {Fore.RESET}]",
         f"{Style.BRIGHT}[{Fore.RED}ERROR{Fore.RESET}]",
         f"{Style.BRIGHT}[{Fore.RED}FATAL{Fore.RESET}]"]
-    color_line = ["{line}", "{line}", "{line}", "{line}", f"{Fore.RED}{{line}}"]
+    color_line = ["{line}", "{line}", "{line}", "{line}", f"{Fore.RED}{{line}}{Fore.RESET}"]
 
 
 # main class of this module
@@ -63,44 +62,51 @@ class Logger:
         return time.strftime(datetime_format)
 
     # add note to file
-    def __add_note(self, line: str, new_date: str):
+    def __add_note(self, line: str, new_date: str | None):
         # check if change the date
         if self.__old_date != new_date:
             # create new file
-            self.__path_to_log_file = f"{self.cfg['default_path']}{self.name}_{new_date}.txt"
+            self.__path_to_log_file = f"{launch_path}/{self.cfg['default_path']}{self.name}_{new_date}.txt"
+            print(self.__path_to_log_file)
             with open(self.__path_to_log_file, "w", encoding=self.cfg["encoding"]) as file:
-                file.write(f"Logger version {VERSION} | Log of module --> {self.name}\n")
+                file.write(f"Logger version | Log of module --> {self.name}\n")
             self.__old_date = new_date
         # write a note to the file
         with open(self.__path_to_log_file, "a", encoding=self.cfg["encoding"]) as file:
             file.write(line)
 
     # print info
-    def printf(self, line: str, log_type: int = 0, end: str = "\n", log_text_in_file: bool = True):
-        # generate timestamp
+    def printf(self, line: str, log_type: int = 0, end: str = "\n", watermark: bool = True, log_text_in_file: bool = True):
         now_int_time = datetime.now()
         now_date = self.__get_str_datetime(now_int_time, self.cfg["date_format"])
         now_time = self.__get_str_datetime(now_int_time, self.cfg["time_format"])
-        # generate color text
-        c_line = self.msg_format.format(now_time=Colors.time.format(now_time=now_time),
-                                        name=Colors.name.format(name=self.name),
-                                        log_type=Colors.color_log_types[log_type],
-                                        line=Colors.color_line[log_type].format(line=line))
+        # generate timestamp
+        if watermark:
+            # generate color text
+            c_line = self.msg_format.format(now_time=Colors.time.format(now_time=now_time),
+                                            name=Colors.name.format(name=self.name),
+                                            log_type=Colors.color_log_types[log_type],
+                                            line=Colors.color_line[log_type].format(line=line))
+        else:
+            c_line = Colors.color_line[log_type].format(line=line)
         print(c_line, file=self.out_stream, end=end)
         # need to save note in file
         if log_text_in_file:
             # generate text without ansi color
-            f_line = self.msg_format.format(now_time=now_time,
-                                            name=self.name,
-                                            log_type=Colors.log_types[log_type],
-                                            line=line
-                                            ) + "\n"
+            if watermark:
+                f_line = self.msg_format.format(now_time=now_time,
+                                                name=self.name,
+                                                log_type=Colors.log_types[log_type],
+                                                line=line
+                                                ) + end
+            else:
+                f_line = line + end
             # add text to file
             self.__add_note(f_line, now_date)
 
-    def println(self, *lines: str, log_type: int = 0, end: str = "\n", log_text_in_file: bool = True):
+    def println(self, *lines: str, log_type: int = 0, end: str = "\n", watermark: bool = True, log_text_in_file: bool = True):
         for line in lines:
-            self.printf(line, log_type=log_type, end=end, log_text_in_file=log_text_in_file)
+            self.printf(line, log_type=log_type, end=end, watermark=watermark, log_text_in_file=log_text_in_file)
 
 
 class PrintHandler:
@@ -133,21 +139,19 @@ class PrintHandler:
 class ErrorHandler:
     def __init__(self, logger: Logger):
         self.log = logger
-        self._err_text = ""
-        self._hand_code = 0
 
     def flush(self):
         pass
 
-    def write(self, message: str):
+    def write(self, message):
         if not message:
             return
-        self._err_text += message
+        str_msg = str(message)
+        if str_msg.find("\n") != -1:
+            lines = str_msg.split("\n")
+            self.log.printf(lines[0], log_type=LogType.FATAL, watermark=False)
+            self.log.println(*[lines[i] for i in range(1, len(lines)-1)], log_type=LogType.FATAL)
+            self.log.printf(lines[-1], log_type=LogType.FATAL, end="")
+        else:
+            self.log.printf(message, log_type=LogType.FATAL, watermark=False, end="")
 
-        if message[0] == ":":
-            self._hand_code = 1
-            return
-        if self._hand_code and self._err_text[-1] == "\n":
-            self.log.printf(self._err_text, LogType.FATAL)
-            self._err_text = ""
-            self._hand_code = 0
