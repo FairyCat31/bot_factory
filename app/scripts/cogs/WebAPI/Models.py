@@ -3,10 +3,11 @@ from disnake.ext import commands
 from typing import Dict, Any
 from hypercorn.config import Config
 from app.scripts.cogs.WebAPI.WebSecure import load_tokens, DataCrypter
-from app.scripts.components.smartdisnake import SmartBot
+from app.scripts.utils.smartdisnake import SmartBot
 from quart import Quart
-from app.scripts.components.crypter import CrypterDict, Hasher
-from app.scripts.components.jsonmanager import JsonManagerWithCrypt
+from app.scripts.utils.crypter import Crypter, Hasher
+from app.scripts.utils.ujson import JsonManagerWithCrypt
+from hypercorn.asyncio import serve
 
 
 class WebSession:
@@ -17,7 +18,7 @@ class WebSession:
         self.dead_time = datetime.now().timestamp() + life_time
         self.session_crypter = DataCrypter()
         self.session_crypter.generate_keys(key_size=2048)
-        self.token_crypter = CrypterDict(crypt_key=token_data['key'].encode())
+        self.token_crypter = Crypter(crypt_key=token_data['key'].encode())
         self.session_hasher = Hasher('sha256', 32)
 
     def is_dead(self) -> bool:
@@ -36,11 +37,11 @@ class WebPacket:
         self.arrive_time = datetime.now().timestamp()
     """
     Method for handling raw request
-    return
-    0 - if all ok
-    1 - Incorrect format
-    2 - Bad packet (something was going wrong, when packet was decrypted)
-    3 - Corrupted format"""
+    return:
+        0 - if all ok
+        1 - Incorrect format
+        2 - Bad packet (something was going wrong, when packet was decrypted)
+        3 - Corrupted format"""
     # def handle_raw_request(self, raw_request: MultiDict) -> int:
     #     if "file" not in raw_request:
     #         return 1
@@ -87,6 +88,9 @@ class WebBase(commands.Cog):
         self.temp_sessions: Dict[str, WebSession] = {}
         self.web_app = Quart(name)
 
+    def __add_quart_to_async_task(self):
+        self.bot.add_async_task(serve(self.web_app, super().init_config_quart()))
+
     @staticmethod
     def init_config_quart() -> Config:
         config = Config()
@@ -103,4 +107,3 @@ class WebBase(commands.Cog):
 def setup(bot: SmartBot):
     pass
     # bot.add_cog(CogWebAPIBase(bot))
-

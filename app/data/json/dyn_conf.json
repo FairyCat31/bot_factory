@@ -1,2 +1,7 @@
 {
+  "dm_moder_role": {
+    "type": "INT",
+    "desc": "",
+    "value": null
+  }
 }

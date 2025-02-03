@@ -1,5 +1,4 @@
 from random import randint
-from app.scripts.factory.errors import FactoryRequirementVersionError
 from string import ascii_letters, digits
 
 
