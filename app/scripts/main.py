@@ -120,7 +120,7 @@ ALL START ARGS""")
             del b[name]
         else:
             b = {}
-        jsm.buffer
+        jsm.buffer = b
         jsm.write_in_file()
 
     @staticmethod
