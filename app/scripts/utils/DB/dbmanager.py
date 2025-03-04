@@ -1,9 +1,14 @@
 import sqlite3
+from sys import path as sys_path
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.scripts.utils.ujson import JsonManagerWithCrypt, AddressType
-from sqlalchemy import MetaData
+from urllib.parse import quote_plus
+from sqlalchemy import MetaData, NullPool
 from app.scripts.factory.errors import DatabaseConnectionDataError, DatabaseNameError
+
+
+launch_path = sys_path[1]
 
 
 class DBType:
@@ -13,7 +18,7 @@ class DBType:
     ONLINE_FORMAT = "://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     MariaDB = "mariadb+pymysql" + ONLINE_FORMAT
     MySQL = "mysql+pymysql" + ONLINE_FORMAT
-    SQLite3 = "app/data/local_dbs/{db_name}.db"
+    SQLite3 = "sqlite:////" + launch_path + "/app/data/local_dbs/{db_name}.db"
 
 
 class DBManager:
@@ -34,6 +39,7 @@ class DBManager:
         # "DB_USER": STR
         # "DB_PASS": STR
         # "DB_NAME": STR
+
         data_for_conn: dict = self._json_manager.buffer.get(database_name)
         if data_for_conn is None:
             raise DatabaseNameError(database_name)
@@ -42,9 +48,9 @@ class DBManager:
                 if data_for_conn.get(par) is None:
                     raise DatabaseConnectionDataError(database_name, par)
         data_for_conn["CONN_URL"] = db_type
+        data_for_conn["DB_PASS"] = quote_plus(data_for_conn["DB_PASS"])
         conn_url = self.get_url_by_dict(data_for_conn)
-        print(conn_url)
-        self.Engine = create_engine(url=conn_url, echo=echo, pool_size=5, max_overflow=10,)
+        self.Engine = create_engine(url=conn_url, echo=echo, poolclass=NullPool)
         self.Session = sessionmaker(self.Engine)
         self.metadata_obj = MetaData()
 
@@ -71,16 +77,6 @@ class DBManager:
                 res = func(self, session, *args, **kwargs)
                 return res
         return wrapper
-
-    # @db_connect
-    # def create_tables(self, conn: Connection):
-    #     self.metadata_obj.create_all(conn)
-    #     conn.commit()
-    #
-    # @db_connect
-    # def drop_tables(self, conn: Connection):
-    #     self.metadata_obj.drop_all(conn)
-    #     conn.commit()
 
 
 class LiteDBManager:
