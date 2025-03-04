@@ -1,7 +1,8 @@
 from utils.ujson import AddressType, JsonManagerWithCrypt
 from factory.errors import FactoryStartArgumentError
 from sys import argv as sys_argv
-from json import loads, dumps
+from json5 import loads
+from json import dumps
 from typing import Any
 import bot_manager
 
@@ -33,6 +34,7 @@ class ArgParser:
         elif value.replace('.', '', 1).isdigit():
             return float(value)
         elif value[0] == "[" or value[0] == "{":
+            print(value)
             return loads(value)
         elif value.lower() in ["true", "yes", "y"]:
             return True
@@ -85,11 +87,16 @@ class StartProcedures:
 
     @staticmethod
     def help():
-        print("""
-ALL START ARGS""")
+        """-help       : Print information about arg and usage"""
+        out = "Py Factory\nusage: main.py -option --parameter=value\nOptions:\n"
+        out += "\n".join([func.__doc__ for func in StartProcedures.__dict__.values() if type(func) == staticmethod])
+        print(out)
 
     @staticmethod
     def launch_bot(**kwargs):
+        """-launch_bot : Launch bot
+        --debug_mode | bool       :
+        --advanced_logging | bool :"""
         bm = bot_manager.BotManager(debug_mode=kwargs["debug_mode"], advanced_logging=kwargs["advanced_logging"])
         bm.init_bot(**kwargs)
         bm.run_bot()
@@ -124,8 +131,34 @@ ALL START ARGS""")
         jsm.write_in_file()
 
     @staticmethod
-    def test():
-        pass
+    def add_serv(serv_data: dict):
+        jsm = JsonManagerWithCrypt(AddressType.CFILE, ".rcon_servers.crptjson")
+        jsm.load_from_file()
+        for name, data in serv_data.items():
+            jsm[name] = data
+        jsm.write_in_file()
+
+    @staticmethod
+    def show_serv(name: str = ""):
+        jsm = JsonManagerWithCrypt(AddressType.CFILE, ".rcon_servers.crptjson")
+        jsm.load_from_file()
+        if name:
+            print(dumps(jsm[name], indent=2))
+        else:
+            print(dumps(jsm.buffer, indent=2))
+
+    @staticmethod
+    def del_serv(name: str = ""):
+        jsm = JsonManagerWithCrypt(AddressType.CFILE, ".rcon_servers.crptjson")
+        jsm.load_from_file()
+        b = jsm.buffer
+        if name:
+            del b[name]
+        else:
+            b = {}
+        jsm.buffer = b
+        jsm.write_in_file()
+
 
 
 class Main:
