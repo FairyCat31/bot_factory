@@ -89,29 +89,38 @@ class SmartRegModal(Modal):
 
 
 class SmartEmbed(Embed):
-    def __init__(self, cfg: dict, **kwargs):
-        map_args = {
+    def __init__(self, cfg: dict, dyn_vars: Dict[str, str]):
+        self.dyn_vars = dyn_vars
+        embed_funcs = {
             "thumbnail": super().set_thumbnail,
             "author": super().set_author,
             "footer": super().set_footer,
-            "image": super().set_image,
-
+            "image": super().set_image
         }
 
-        args: Dict[str, str] = {} if cfg.get("args") is None else cfg["args"]
-        func_args: List[dict] = [] if cfg.get("func_args") is None else cfg["func_args"]
-        fields: List[Dict] = [] if cfg.get("fields") is None else cfg["fields"]
-        super().__init__(
-            **args,
-            **kwargs
-        )
-        for field in fields:
-            super().add_field(**field)
+        init_args = {"color": cfg.get("color"), "url": cfg.get("url")}
+        for arg in ["title", "description"]:
+            value: str = cfg.get(arg)
+            if value is not None:
+                value = value.format(**dyn_vars)
+            init_args[arg] = value
 
-        for func_arg in func_args:
-            func = map_args[func_arg["func"]]
-            args = func_arg["args"]
-            func(**args)
+
+        super().__init__(**init_args)
+
+        if cfg.get("fields") is not None:
+            self.add_fields(cfg["fields"])
+
+        for key in embed_funcs:
+            if cfg.get(key) is None:
+                continue
+            embed_funcs[key](**cfg[key])
+
+    def add_fields(self, embeds: List[dict]):
+        for embed in embeds:
+            super().add_field(name=embed["name"].format(**self.dyn_vars),
+                              value=embed["value"].format(**self.dyn_vars),
+                              inline=embed.get("inline"))
 
 
 class ButtonView(View):
