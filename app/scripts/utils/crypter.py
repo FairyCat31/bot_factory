@@ -5,6 +5,17 @@ from cryptography.fernet import Fernet
 from json import loads, dumps
 from os import urandom
 import hashlib
+from random import randint
+from string import ascii_letters, digits
+
+
+SYM_IDS = ascii_letters + digits
+SYM_LEN = len(SYM_IDS) - 1
+
+
+def gen_random_line(len_id: int = 8) -> str:
+    result = "".join([SYM_IDS[randint(0, SYM_LEN)] for i in range(len_id)])
+    return result
 
 
 def gen_salt(size: int = 32) -> bytes:  # generate random bytes
