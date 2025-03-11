@@ -83,26 +83,29 @@ class StartProcedures:
 
     @staticmethod
     def h():
+        """-h - Print information about arg and usage"""
         return StartProcedures.help()
 
     @staticmethod
     def help():
-        """-help       : Print information about arg and usage"""
+        """-help - Print information about arg and usage"""
         out = "Py Factory\nusage: main.py -option --parameter=value\nOptions:\n"
         out += "\n".join([func.__doc__ for func in StartProcedures.__dict__.values() if type(func) == staticmethod])
         print(out)
 
     @staticmethod
     def launch_bot(**kwargs):
-        """-launch_bot : Launch bot
-        --debug_mode | bool       :
-        --advanced_logging | bool :"""
+        """-launch_bot - Launch bot
+        --debug_mode | bool
+        --advanced_logging | bool"""
         bm = bot_manager.BotManager(debug_mode=kwargs["debug_mode"], advanced_logging=kwargs["advanced_logging"])
         bm.init_bot(**kwargs)
         bm.run_bot()
 
     @staticmethod
     def add_db(db_data: dict):
+        """-add_db - Add connection data
+        --db_data | dict"""
         jsm = JsonManagerWithCrypt(AddressType.CFILE, ".dbs.crptjson")
         jsm.load_from_file()
         for name, data in db_data.items():
@@ -111,6 +114,8 @@ class StartProcedures:
 
     @staticmethod
     def show_db(name: str = ""):
+        """-show_db - Print data for the db connection
+        --name: | str (Optional)"""
         jsm = JsonManagerWithCrypt(AddressType.CFILE, ".dbs.crptjson")
         jsm.load_from_file()
         if name:
@@ -120,6 +125,8 @@ class StartProcedures:
 
     @staticmethod
     def del_db(name: str = ""):
+        """-del_db - Del data for the db connection
+        --name: | str (Optional)"""
         jsm = JsonManagerWithCrypt(AddressType.CFILE, ".dbs.crptjson")
         jsm.load_from_file()
         b = jsm.buffer
@@ -132,6 +139,8 @@ class StartProcedures:
 
     @staticmethod
     def add_serv(serv_data: dict):
+        """-add_serv - Print data for the rcon connection
+        --serv_data: | dict"""
         jsm = JsonManagerWithCrypt(AddressType.CFILE, ".rcon_servers.crptjson")
         jsm.load_from_file()
         for name, data in serv_data.items():
@@ -140,6 +149,8 @@ class StartProcedures:
 
     @staticmethod
     def show_serv(name: str = ""):
+        """-show_serv - Show data for the rcon connection
+        --name: | str (Optional)"""
         jsm = JsonManagerWithCrypt(AddressType.CFILE, ".rcon_servers.crptjson")
         jsm.load_from_file()
         if name:
@@ -149,6 +160,8 @@ class StartProcedures:
 
     @staticmethod
     def del_serv(name: str = ""):
+        """-del_serv - Del data for the rcon connection
+        --name: | str (Optional)"""
         jsm = JsonManagerWithCrypt(AddressType.CFILE, ".rcon_servers.crptjson")
         jsm.load_from_file()
         b = jsm.buffer
@@ -158,8 +171,6 @@ class StartProcedures:
             b = {}
         jsm.buffer = b
         jsm.write_in_file()
-
-
 
 class Main:
     def __init__(self):
