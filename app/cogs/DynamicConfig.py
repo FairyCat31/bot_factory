@@ -64,7 +64,7 @@ class DynamicConfigCog(commands.Cog):
     def __init__(self, bot: SmartBot):
         self.bot = bot
         file_name = bot.props["dynamic_config_file_name"]
-        self.dynamic_json = JsonManager(AddressType.FILE, file_name)
+        self.dynamic_json = JsonManager(file_name)
         self.dynamic_json.load_from_file()
 
     @staticmethod
@@ -215,7 +215,7 @@ class DynamicConfigCog(commands.Cog):
 # method for building class with data from bot_properties
 def build(bot: SmartBot):
     file_name = bot.props["dynamic_config_file_name"]
-    cfg_file = JsonManager(AddressType.FILE, file_name)
+    cfg_file = JsonManager(file_name)
     cfg_file.load_from_file()
     chs_to_set_param = list(cfg_file.keys())
     chs_to_del_param = chs_to_set_param.copy()

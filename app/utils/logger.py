@@ -1,4 +1,4 @@
-from app.utils.ujson import JsonManager, AddressType
+from app.utils.ujson import JsonManager
 from sys import stdout, path as sys_path
 from colorama import init, Fore, Style
 from datetime import datetime
@@ -11,7 +11,7 @@ launch_path = sys_path[1]
 
 class LogType:
     """
-    helpful class for set log suffix in func printf
+    Helpful class for set log suffix in func printf
     """
     INFO = 0
     DEBUG = 1
@@ -36,24 +36,26 @@ class Colors:
     color_line = ["{line}", "{line}", "{line}", "{line}", f"{Fore.RED}{{line}}{Fore.RESET}"]
 
 
-# main class of this module
+
 class Logger:
-    """
-    Class for logging all info with timestamps, file saving and coloring
-    """
     def __init__(self, name: str, debug_mode: bool = None,  out_stream: TextIO = None):
         """
-        name - this is a prefix, which logger will use
-        debug_mode - if logger need to skip DEBUG message
+        Class for logging all info with timestamps, file saving and coloring
+        Args:
+            name: this is a prefix, which logger will use
+            debug_mode: if logger need to skip DEBUG message
+
         """
+
         # get conf to logger
-        self.cfg = JsonManager(AddressType.FILE, "logger_conf.json")
+        self.cfg = JsonManager("logger_conf.json")
         self.cfg.load_from_file()
+        # bind out stream
         self.out_stream = out_stream
         if out_stream is None:
             self.out_stream = stdout.orig_out_stream if isinstance(stdout, PrintHandler) else stdout
-        self._debug_mode = debug_mode
         # init class data, prefix
+        self._debug_mode = debug_mode
         self.name = name
         self.__old_date = ""
         self.__path_to_log_file = ""
@@ -91,14 +93,13 @@ class Logger:
         with open(self.__path_to_log_file, "a", encoding=self.cfg["encoding"]) as file:
             file.write(line)
 
-    # print info
     def printf(self,
                line: str,
                log_type: int = 0,
                end: str = "\n",
                watermark: bool = True,
                log_text_in_file: bool = True):
-        """ PRINT ONE LINE"""
+        """ PRINT ONE LINE """
         now_int_time = datetime.now()
         now_date = self.__get_str_datetime(now_int_time, self.cfg["date_format"])
         now_time = self.__get_str_datetime(now_int_time, self.cfg["time_format"])
@@ -120,9 +121,9 @@ class Logger:
                                                 name=self.name,
                                                 log_type=Colors.log_types[log_type],
                                                 line=line
-                                                ) + end
+                                                )
             else:
-                f_line = line + end
+                f_line = line
             # add text to file
             self.__add_note(f_line, now_date)
 
@@ -136,15 +137,30 @@ class Logger:
         for line in lines:
             self.printf(line, log_type=log_type, end=end, watermark=watermark, log_text_in_file=log_text_in_file)
 
+    def info(self, line: str, log_text_in_file: bool = True):
+        self.printf(line, LogType.INFO, log_text_in_file=log_text_in_file)
+
+    def warn(self, line: str, log_text_in_file: bool = True):
+        self.printf(line, LogType.WARN, log_text_in_file=log_text_in_file)
+
+    def error(self, line: str, log_text_in_file: bool = True):
+        self.printf(line, LogType.ERROR, log_text_in_file=log_text_in_file)
+
+    def critical(self, line: str, log_text_in_file: bool = True):
+        self.printf(line, LogType.FATAL, log_text_in_file=log_text_in_file)
+
+
 
 class PrintHandler:
-    """ Class for the handling stdout stream"""
     def __init__(self, logger: Logger, orig_out_stream: TextIO = stdout,
                  save_to_file: bool = False):
         """
-            logger - Bot logger object
-            orig_out_stream - original stdout object
-            save_to_file - is need to save DEBUG messages in file
+        Class for the handling stdout stream
+
+        Args:
+            logger: Bot logger object
+            orig_out_stream: original stdout object
+            save_to_file: is need to save DEBUG messages in file
         """
         self.log = logger
         self._orig_out_stream = orig_out_stream
