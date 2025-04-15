@@ -154,8 +154,8 @@ class Hasher:
 
         Args:
             hash_name: name of hash function
-            salt:
-            encoding:
+            salt: random line
+            encoding: salt and data encoding
         """
         self.hash_name = hash_name
         self.encoding = encoding
@@ -170,6 +170,9 @@ class Hasher:
             self.salt = gen_salt(salt if t_salt is int else 32)
 
     def data_hash(self, data: bytes, iters: int = 100):
+        """
+        Hashing
+        """
         return hashlib.pbkdf2_hmac(self.hash_name, data, self.salt, iters)
 
     def data_hex_hash(self, data: str, iters: int = 100, encoding: str | None = None):
