@@ -1,0 +1,7 @@
+poetry env activate
+$env:PYTHONPATH = $PWD.Path
+
+#python app/scripts/main.py -launch_bot --name=Test --debug_mode=True --advanced_logging=True
+#poetry run python app/scripts/main.py -h
+poetry run python app/scripts/main.py -launch_bot --name=Test --debug_mode=False --advanced_logging=False
+pause
