@@ -1,9 +1,9 @@
 from typing import Any, List, Dict, Callable
 from disnake import ApplicationCommandInteraction, Role, Interaction
-from app.scripts.utils.logger import LogType
+from app.utils.logger import LogType
 from disnake.ext import commands
-from app.scripts.utils.ujson import JsonManager, AddressType
-from app.scripts.utils.smartdisnake import SmartBot
+from app.utils.ujson import JsonManager, AddressType
+from app.utils.smartdisnake import SmartBot
 from functools import wraps as wrapper_func
 
 

@@ -4,8 +4,8 @@ from typing import List, Dict
 from disnake.ext import commands
 from disnake import Embed, ButtonStyle
 from time import time
-from app.scripts.utils.logger import Logger, LogType
-from app.scripts.utils.ujson import JsonManager, AddressType
+from app.utils.logger import Logger, LogType
+from app.utils.ujson import JsonManager, AddressType
 from typing import Coroutine
 
 

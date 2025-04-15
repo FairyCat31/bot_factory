@@ -1,5 +1,5 @@
 from aiomcrcon import Client, RCONConnectionError, IncorrectPasswordError
-from app.scripts.utils.ujson import JsonManagerWithCrypt, AddressType
+from app.utils.ujson import JsonManagerWithCrypt, AddressType
 from typing import List
 
 

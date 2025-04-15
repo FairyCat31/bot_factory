@@ -3,9 +3,9 @@ from disnake.ext import commands
 from hypercorn.asyncio import serve
 from hypercorn.config import Config
 from quart import Quart, request, jsonify
-from app.scripts.utils.smartdisnake import SmartBot
-from app.scripts.utils.ujson import JsonManager, AddressType
-from app.scripts.cogs.WebAPI.Models import AuthToken, WebSession, Message
+from app.utils.smartdisnake import SmartBot
+from app.utils.ujson import JsonManager, AddressType
+from app.cogs.WebAPI.Models import AuthToken, WebSession, Message
 
 
 class WebBase(commands.Cog):

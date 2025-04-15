@@ -1,5 +1,5 @@
 from json5 import dump as dump5, load as load5
-from app.scripts.utils.crypter import Crypter
+from app.utils.crypter import Crypter
 from re import search as shape_search
 from sys import path as sys_path
 from dotenv import dotenv_values

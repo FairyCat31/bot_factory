@@ -1,10 +1,10 @@
-from datetime import datetime
-from app.scripts.utils.ujson import JsonManager, AddressType
+from app.utils.ujson import JsonManager, AddressType
 from sys import stdout, path as sys_path
-from typing import TextIO
 from colorama import init, Fore, Style
+from datetime import datetime
+from typing import TextIO
 from pathlib import Path
-init()
+
 
 launch_path = sys_path[1]
 
@@ -58,6 +58,8 @@ class Logger:
         self.__old_date = ""
         self.__path_to_log_file = ""
         self.msg_format = self.cfg["msg_format"] + Fore.RESET
+
+        init()
 
     def __str__(self):
         return self.name

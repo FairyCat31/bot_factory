@@ -4,7 +4,7 @@ from sys import argv as sys_argv
 from json5 import loads
 from json import dumps
 from typing import Any
-import bot_manager
+from bot_manager import BotManager
 
 
 __all__ = [
@@ -98,7 +98,7 @@ class StartProcedures:
         """-launch_bot - Launch bot
         --debug_mode | bool
         --advanced_logging | bool"""
-        bm = bot_manager.BotManager(debug_mode=kwargs["debug_mode"], advanced_logging=kwargs["advanced_logging"])
+        bm = BotManager(debug_mode=kwargs["debug_mode"], advanced_logging=kwargs["advanced_logging"])
         bm.init_bot(**kwargs)
         bm.run_bot()
 

@@ -14,6 +14,7 @@ class BotManager:
         if advanced_logging:
             sys.stderr = ErrorHandler(self.log)
             sys.stdout = PrintHandler(self.log)
+        #
         self.json_manager = JsonManager(AddressType.FILE, "bot_properties.json")
         self.bot_man_props = JsonManager(AddressType.FILE, "factory.json")
         self.json_manager.load_from_file()
