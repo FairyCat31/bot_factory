@@ -7,6 +7,7 @@ from app.scripts.utils.smartdisnake import SmartBot
 from app.scripts.utils.ujson import JsonManager, AddressType
 from app.scripts.cogs.WebAPI.Models import AuthToken, WebSession, Message
 
+
 class WebBase(commands.Cog):
     def __init__(self, bot: SmartBot, name: str = "API"):
         self.bot = bot
@@ -26,7 +27,6 @@ class WebBase(commands.Cog):
                 check_auth = session.is_invalid_auth(request, token_type=token_type)
                 if check_auth[0]["error"]:
                     return check_auth
-
 
                 return await func(session, *args, **kwargs)
             return wrapper
