@@ -1,7 +1,6 @@
 {
-  "dm_moder_role": {
+  "test_value": {
     "type": "INT",
-    "desc": "",
     "value": null
   }
 }

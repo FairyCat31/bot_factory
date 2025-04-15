@@ -1,5 +1,5 @@
 from typing import Any, List, Dict, Callable
-from disnake import ApplicationCommandInteraction, Role
+from disnake import ApplicationCommandInteraction, Role, Interaction
 from app.scripts.utils.logger import LogType
 from disnake.ext import commands
 from app.scripts.utils.ujson import JsonManager, AddressType
@@ -7,7 +7,8 @@ from app.scripts.utils.smartdisnake import SmartBot
 from functools import wraps as wrapper_func
 
 
-class ValueConvertorFromUser:
+# subclass for the Dynamic Config Shape
+class ValueConvertor:
     def __init__(self, value_type: str, value: str):
         self._value_type = value_type
         self._original_value = value
@@ -24,39 +25,58 @@ class ValueConvertorFromUser:
         }
         convert_func = self.convert_func_by_type.get(self._value_type)
         if convert_func is not None:
-            try:
-                self._convert_value = convert_func(self._original_value)
-            except AttributeError:
-                self._convert_value = None
-            except ValueError:
-                self._convert_value = None
+            self._convert_value = convert_func(self._original_value)
+
+    @property
+    def convert_value(self) -> Any:
+        return self._convert_value
+
+    # convert methods
 
     @staticmethod
     def _convert_str_to_bool(line: str) -> bool:
         return line.lower() in ["true", "1", "yes", "y"]
 
     @staticmethod
-    def _convert_discord_obj_to_discord_id(line: str) -> int:
-        return int(line[2:-1])
+    def _convert_discord_obj_to_discord_id(line: str) -> int | None:
+        if len(line) < 4:
+            return
+
+        ds_id = line[2:-1]
+        if not ds_id.isdigit():
+            return
+
+        return int(ds_id)
 
     @staticmethod
-    def _convert_discord_role_to_discord_id(line: str) -> int:
-        return int(line[3:-1])
+    def _convert_discord_role_to_discord_id(line: str) -> int | None:
+        if len(line) < 5:
+            return
 
-    def return_convert_value(self):
-        return self._convert_value
+        ds_id = line[2:-1]
+        if not ds_id.isdigit():
+            return
+
+        return int(ds_id)
 
 
-class DynamicConfigShape(commands.Cog):
+class DynamicConfigCog(commands.Cog):
     def __init__(self, bot: SmartBot):
         self.bot = bot
         file_name = bot.props["dynamic_config_file_name"]
         self.dynamic_json = JsonManager(AddressType.FILE, file_name)
         self.dynamic_json.load_from_file()
-        self.__update_dynamic_config()
 
     @staticmethod
-    def is_cfg_setup(*params: str, echo: bool = True):
+    def is_cfg_setup(*params: str, echo: bool = True, discord_response: bool = False):
+        """
+        Check if dyn params is set and cancel func if it not
+
+        Args:
+            *params: list of dyn vars for the checking
+            echo: console logging
+            discord_response: chat logging to user
+        """
         def decorator(function):
             @wrapper_func(function)
             async def wrapper(self, *args, **kwargs):
@@ -69,16 +89,31 @@ class DynamicConfigShape(commands.Cog):
                     await function(self, *args, **kwargs)
                     return
                 output = self.bot.props["def_phrases/RunErrorDynConfig"] % output
-                self.bot.log.printf(output, LogType.WARN)
                 if echo:
-                    inter = kwargs["inter"]
+                    self.bot.log.printf(output, LogType.WARN)
+                if discord_response:
+                    inter = kwargs.get("inter")
+                    if inter is None or not issubclass(type(inter), Interaction):
+                        if len(args) > 0:
+                            inter = args[0]
+                    if inter is None or not issubclass(type(inter), Interaction):
+                        print("Ошибка отработки is_cfg_setup")
+                        return
                     await inter.response.send_message(output)
-
+                return
             return wrapper
         return decorator
 
     @staticmethod
-    def has_any_roles(*role_tags: str):
+    def has_any_roles(*role_tags: str, discord_response: bool = True):
+        """
+        check roles exist by dyn vars
+
+        Args:
+            *role_tags: dyn vars name
+            discord_response: chat logging to user
+
+        """
         def decorator(func: Callable):
             @wrapper_func(func)
             async def wrapper(self, *args, **kwargs) -> Any:
@@ -89,86 +124,95 @@ class DynamicConfigShape(commands.Cog):
                 for role_id in role_ids:
                     if role_id in member_role_ids:
                         continue
-                    await inter.response.send_message(self.bot.props["def_phrases/PermErrorDynConfig"])
+                    if discord_response:
+                        await inter.response.send_message(self.bot.props["def_phrases/PermErrorDynConfig"])
+                    else:
+                        await inter.response.defer()
                     return
                 result = await func(self, *args, **kwargs)
                 return result
             return wrapper
         return decorator
 
-    """
-        convert and get dyn conf
-        from
-        { par:
-            {value: test, type: str}
-        }
-        to
-        {par: test}
-    """
-
-    def __get_dynamic_config(self) -> Dict[str, Any]:
+    # load config from file
+    def _load_dynamic_config(self) -> Dict[str, Any]:
         dyn_buffer = self.dynamic_json.buffer
         dynamic_config = {}
         for key in dyn_buffer.keys():
             dynamic_config[key] = self.dynamic_json[f"{key}/value"]
         return dynamic_config.copy()
 
-    # update parameter "dynamic_config" in bot's buffer of json_manager
-    def __update_dynamic_config(self) -> None:
-        self.bot.props["dynamic_config"] = self.__get_dynamic_config()
+    # reload values
+    def _reload_dynamic_config(self):
         self.dynamic_json.write_in_file()
+        self.bot.props["dynamic_config"] = self._load_dynamic_config()
 
-    #  generate beautiful table for printing
-    def __generate_values_table(self) -> str:
-        dynamic_config = self.__get_dynamic_config()
-        len_key_column = len(max(map(str, dynamic_config.keys()), key=len))
-        len_value_column = len(max(map(str, dynamic_config.values()), key=len))
+    def _gen_value_table(self) -> str:
+        """
+        Generate beautiful table for printing
+
+        """
+        dynamic_config = self._load_dynamic_config()
+        len_key_column = max(map(len, dynamic_config.keys()))
+        len_value_column = max(map(lambda v: len(str(v)), dynamic_config.values()))
         line_format = "{:<%i} {:<%i}" % (len_key_column + 5, len_value_column + 5)
         result = line_format.format('parameter', 'value') + "\n"
         lines = [line_format.format(key, str(value)) for key, value in dynamic_config.items()]
-        result += "\n".join(lines)
+        result += "```" + "\n".join(lines) + "```"
         return result
 
-    async def config_set_param(self, inter: ApplicationCommandInteraction,
-                               parameter: str,
-                               value: Any) -> None:
-        # data type which set in config
+
+    async def config_set_param(self, inter: ApplicationCommandInteraction, parameter: str, value: Any) :
+        """
+        Slash command for the setting value
+
+        """
+
         data_type_need = self.dynamic_json[f"{parameter}/type"]
-        # data type of value which took user
-        convert_value = ValueConvertorFromUser(data_type_need, value).return_convert_value()
+        convert_value = ValueConvertor(data_type_need, value).convert_value
+
         if convert_value is None:
             await inter.response.send_message(
-                self.bot.props["def_phrases/FormatErrorDynConfig"].format(value=value, data_type_need=data_type_need)
+                self.bot.props["def_phrases/FormatErrorDynConfig"]
+            .format(value=value, data_type_need=data_type_need)
             )
             self.bot.log.printf(self.bot.props["def_phrases/ConsoleFormatErrorDynConfig"], log_type=LogType.WARN)
             return
-        # if all ok we get response what all ok
-        await inter.response.send_message(self.__generate_values_table())
+
         self.dynamic_json[f"{parameter}/value"] = convert_value
+        self._reload_dynamic_config()
 
-        # update new config in bot json_manager
-        self.__update_dynamic_config()
-        # log what all ok
-        self.bot.log.printf(self.bot.props["def_phrases/ConsoleEditInfo"].format(parameter=parameter, value=value))
+        await inter.response.send_message(self._gen_value_table())
+        print(self.bot.props["def_phrases/ConsoleEditInfo"]
+                            .format(parameter=parameter, convert_value=value))
 
-    # print all params in discord
-    async def config_show(self, inter: ApplicationCommandInteraction) -> None:
-        await inter.response.send_message(self.__generate_values_table())
+    async def config_show(self, inter: ApplicationCommandInteraction):
+        """
+        Print all params in discord
 
-    async def config_reset(self, inter: ApplicationCommandInteraction, parameter: str = "") -> None:
+        """
+
+        await inter.response.send_message(self._gen_value_table())
+
+    async def config_reset(self, inter: ApplicationCommandInteraction, parameter: str = ""):
+        """
+        Reset value of dyn var
+
+
+        """
+
         if parameter != "ALL":
             self.dynamic_json[f"{parameter}/value"] = None
-            self.__update_dynamic_config()
         else:
-            buffer = self.dynamic_json.buffer
-            parameters = buffer.keys()
-            for parameter in parameters:
-                self.dynamic_json[f"{parameter}/value"] = None
-            self.__update_dynamic_config()
+            var_names = self.dynamic_json.keys()
+            for var_name in var_names:
+                self.dynamic_json[f"{var_name}/value"] = None
 
-        await inter.response.send_message(self.__generate_values_table())
+        self._reload_dynamic_config()
 
+        await inter.response.send_message(self._gen_value_table())
 
+# method for building class with data from bot_properties
 def build(bot: SmartBot):
     file_name = bot.props["dynamic_config_file_name"]
     cfg_file = JsonManager(AddressType.FILE, file_name)
@@ -177,7 +221,9 @@ def build(bot: SmartBot):
     chs_to_del_param = chs_to_set_param.copy()
     chs_to_del_param.append("ALL")
 
-    class BuildDynamicConfig(DynamicConfigShape):
+    class BuildDynamicConfig(DynamicConfigCog):
+        # bind decorators from properties
+
         @commands.slash_command(**bot.props["cmds/main_cfg"])
         @commands.default_member_permissions(administrator=True)
         async def config(self, inter):
