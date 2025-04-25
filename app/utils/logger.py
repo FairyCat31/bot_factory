@@ -59,7 +59,7 @@ class Logger:
         self.name = name
         self.__old_date = ""
         self.__path_to_log_file = ""
-        self.msg_format = self.cfg["msg_format"] + Fore.RESET
+        self.msg_format = self.cfg["msg_format"]
 
         init()
 
@@ -87,7 +87,7 @@ class Logger:
             Path(fullpath).mkdir(parents=True, exist_ok=True)
             self.__path_to_log_file = f"{fullpath}{self.name}_{new_date}.txt"
             with open(self.__path_to_log_file, "w", encoding=self.cfg["encoding"]) as file:
-                file.write(f"Logger version | Log of module --> {self.name}\n")
+                file.write(f"Logger version 2 | Log of module --> {self.name}\n")
             self.__old_date = new_date
         # write a note to the file
         with open(self.__path_to_log_file, "a", encoding=self.cfg["encoding"]) as file:
@@ -109,7 +109,8 @@ class Logger:
             c_line = self.msg_format.format(now_time=Colors.time.format(now_time=now_time),
                                             name=Colors.name.format(name=self.name),
                                             log_type=Colors.color_log_types[log_type],
-                                            line=Colors.color_line[log_type].format(line=line))
+                                            line=Colors.color_line[log_type].format(line=line)
+                                            ) + Fore.RESET
         else:
             c_line = Colors.color_line[log_type].format(line=line)
         print(c_line, file=self.out_stream, end=end)
@@ -124,6 +125,7 @@ class Logger:
                                                 )
             else:
                 f_line = line
+            f_line += end
             # add text to file
             self.__add_note(f_line, now_date)
 
