@@ -22,6 +22,17 @@ class AddressType:
     PATH = ""
 
 
+class Udict(dict):
+    def __getattr__(self, item: str) -> Any:
+        value = self.get(item)
+        if value is None:
+            return None
+        elif type(value) is dict:
+            return Udict(value)
+        else:
+            return value
+
+
 class JsonManager:
     def __init__(self, address: str,
                  address_type: str = AddressType.FILE,
@@ -52,15 +63,6 @@ class JsonManager:
         if smart_create and not exists(self._path):
             self.write_in_file()
 
-    def __path_items(self, line: str) -> List[str]:  # split path to elements
-        res_parse = shape_search("<&(.+?)>", line)
-        if res_parse:
-            separator = res_parse.group(1)
-        else:
-            separator = self.json_config["def_separator"]
-        path_items = line.split(separator)
-        return path_items
-
     # methods for buffer
     @property
     def buffer(self) -> dict:
@@ -73,6 +75,15 @@ class JsonManager:
     def __str__(self):
         return dumps(self._buffer)
 
+    def __path_items(self, line: str) -> List[str]:  # split path to elements
+        res_parse = shape_search("<&(.+?)>", line)
+        if res_parse:
+            separator = res_parse.group(1)
+        else:
+            separator = self.json_config["def_separator"]
+        path_items = line.split(separator)
+        return path_items
+
     def __getitem__(self, item) -> Any:  # method for get item from dict by class
         item = str(item)
         object_output = self._buffer.copy()
@@ -81,6 +92,8 @@ class JsonManager:
         # getting need element
         for path_item in path_items:
             object_output = object_output.get(path_item)
+            if object_output is None:
+                return None
 
         return object_output
 
@@ -97,6 +110,13 @@ class JsonManager:
             # create empty dict if address is empty
             buffer.setdefault(k, {})
             buffer = buffer[k]
+
+    def __getattr__(self, item: str) -> Any:
+        value = self.get(item)
+        if type(value) is dict:
+            return Udict(value)
+        else:
+            return value
 
     # group of methods for working with dict buffer without getting them.
     def keys(self):
