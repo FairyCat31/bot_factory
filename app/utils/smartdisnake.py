@@ -25,6 +25,7 @@ class SmartBot(commands.Bot):
         self.props = JsonManager("bot_properties.json")
         self.props.load_from_file()
         self.log = Logger(name=name)
+        self.async_sub_process_task = None
 
     def add_async_task(self, target: Coroutine) -> None:
         self._async_tasks_for_queue.append(target)
@@ -32,13 +33,20 @@ class SmartBot(commands.Bot):
     async def start_async_tasks(self):
         await asyncio.gather(*self._async_tasks_for_queue)
 
+    async def stop_async_tasks(self):
+        if self.async_sub_process_task is not None:
+            await asyncio.sleep(10)
+            self.async_sub_process_task.cancel()
+
     async def on_ready(self):
         end_time = time()
         delta_time = ((end_time - self.start_time) // 0.0001) / 10000
         self.log.println(*self.props["def_phrases/start"]
                          .format(user=self.user, during_time=delta_time)
                          .split("\n"))
-        await asyncio.create_task(self.start_async_tasks())
+        self.async_sub_process_task = asyncio.create_task(self.start_async_tasks())
+        await self.async_sub_process_task
+        await self.stop_async_tasks()
 
     async def on_command_error(self,
                                context: commands.Context,
