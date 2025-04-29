@@ -11,7 +11,7 @@ from app.cogs.WebAPI.Models import AuthToken, WebSession, Message
 
 
 __pyfactory_package__ = {
-    "name": "web_models",
+    "name": "web_base",
     "version": "1.0",
     "dependencies": {
         "smartdisnake": "1",
