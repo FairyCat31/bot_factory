@@ -1,11 +1,22 @@
 from typing import Any, List, Dict, Callable
-from disnake import ApplicationCommandInteraction, Role, Interaction
-from app.utils.logger import LogType
-from disnake.ext import commands
-from app.utils.ujson import JsonManager, AddressType
-from app.utils.smartdisnake import SmartBot
 from functools import wraps as wrapper_func
 
+from disnake import ApplicationCommandInteraction, Role, Interaction
+from disnake.ext import commands
+
+from app.utils.logger import LogType
+from app.utils.ujson import JsonManager
+from app.utils.smartdisnake import SmartBot
+
+
+__pyfactory_package__ = {
+    "name": "dynamic_config",
+    "version": "1.0",
+    "dependencies": {
+        "smartdisnake": "1",
+        "ujson": "1"
+    }
+}
 
 # subclass for the Dynamic Config Shape
 class ValueConvertor:
@@ -225,21 +236,23 @@ def build(bot: SmartBot):
         # bind decorators from properties
 
         @commands.slash_command(**bot.props["cmds/main_cfg"])
-        @commands.default_member_permissions(administrator=True)
         async def config(self, inter):
             pass
 
         @config.sub_command(**bot.props["cmds/set_cfg"])
+        @commands.default_member_permissions(administrator=True)
         async def config_set(self, inter: ApplicationCommandInteraction,
                              parameter: str = commands.Param(choices=chs_to_set_param),
                              value: str = None):
             await super().config_set_param(inter, parameter, value)
 
         @config.sub_command(**bot.props["cmds/show_cfg"])
+        @commands.default_member_permissions(administrator=True)
         async def config_show(self, inter):
             await super().config_show(inter)
 
         @config.sub_command(**bot.props["cmds/del_cfg"])
+        @commands.default_member_permissions(administrator=True)
         async def config_reset(self, inter,
                                parameter: str = commands.Param(choices=chs_to_del_param)):
             await super().config_reset(inter, parameter)

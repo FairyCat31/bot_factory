@@ -1,10 +1,21 @@
-from app.utils.ujson import JsonManager
 from sys import stdout, path as sys_path
-from colorama import init, Fore, Style
 from datetime import datetime
 from typing import TextIO
 from pathlib import Path
 
+from colorama import init, Fore, Style
+
+from app.utils.ujson import JsonManager
+
+
+__pyfactory_package__ = {
+    "name": "logger",
+    "version": "1",
+    "dependencies": {
+        "logger_conf": "1",
+        "ujson": "1"
+    }
+}
 
 launch_path = sys_path[1]
 

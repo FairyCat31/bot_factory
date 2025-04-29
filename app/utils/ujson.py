@@ -1,13 +1,23 @@
-from json5 import dump as dump5, load as load5
-from app.utils.crypter import Crypter
 from re import search as shape_search
 from sys import path as sys_path
-from dotenv import dotenv_values
 from json import load, dumps
 from typing import Any, List
 from os.path import exists
 from pathlib import Path
 
+from json5 import dump as dump5, load as load5
+from dotenv import dotenv_values
+
+from app.utils.crypter import Crypter
+
+
+__pyfactory_package__ = {
+    "name": "ujson",
+    "version": "1",
+    "dependencies": {
+        "crypter": "1"
+    }
+}
 
 PATH_CONFIG_JSON = "app/data/json/json_conf.json"
 launch_path = sys_path[1] + "/"

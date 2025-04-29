@@ -1,0 +1,142 @@
+{
+  "excluded_paths": [
+    ".\\cogs",
+    ".\\data\\logs",
+    "__pycache__",
+    "py_factory.json"
+  ],
+  "files": [
+    {
+      "fullpath": ".\\bot_manager.py",
+      "MD5": "e0fbe7d4cc8ce7e6362f5dcd077f42f5",
+      "SHA1": "a25b358914481e1a97d946d3b5cb9ea3bc68c728",
+      "SHA256": "31d09f853e918a1818c598f8dd70c67316f4d6dbe64b833382457fbabfc33c04"
+    },
+    {
+      "fullpath": ".\\main.py",
+      "MD5": "39c5d46392ed7e998b91f3144df2a3f4",
+      "SHA1": "a654384896dff8af3cdfb8e3af8e6492f55f182f",
+      "SHA256": "c2ba91f1184e6a41163223fe06e77dd3083915ea1eb9f3d3d2c63d3d64ba1f0e"
+    },
+    {
+      "fullpath": ".\\test.py",
+      "MD5": "6aa6bc0a5b4ebb88d0bd59fd10efdaf3",
+      "SHA1": "5123e6669fecc35ecfb48901b1a10b91ac00ce0c",
+      "SHA256": "8d320aa9169de9f126a3c12b882412385c90fb79cddf3b5701577aca8776afb8"
+    },
+    {
+      "fullpath": ".\\cogs\\CLI.py",
+      "MD5": "0209692884ecfa7924a42ce8cd894065",
+      "SHA1": "26fd7c6b446627771b9814ddaa05a2f95199692a",
+      "SHA256": "a9a2125b8f0fff6b4657d325e2a5890ea7f4f14bd653c21a070d0a8c9c60e6db"
+    },
+    {
+      "fullpath": ".\\cogs\\DynamicConfig.py",
+      "MD5": "49278fe586f5f960e7c216b8de3d051f",
+      "SHA1": "a84b4b03a7a76072ec0ccae86ff5ec61a6bdc787",
+      "SHA256": "88103612ac29cd5d7abe1e9b47fb320b3269a5ea28152f3b5c00cc51166bfaa6"
+    },
+    {
+      "fullpath": ".\\cogs\\Main.py",
+      "MD5": "d0389566797ce1554e19d9f846a2a335",
+      "SHA1": "6c7ae2260aa80215a82fbca7e5ba06fb94152e36",
+      "SHA256": "b8da99107e2ebff24b076a0c2aa43b1b31496d5c1a3a03e23f684e5c7f85ea49"
+    },
+    {
+      "fullpath": ".\\cogs\\WebAPI\\Models.py",
+      "MD5": "217e69706666685b406b1a8e10312f02",
+      "SHA1": "d4ab8788e95a7ddafeb64c4ec7f34386f63ae2cc",
+      "SHA256": "ca4d72ec54a94c7a01f9a3e67a2ff5a5bcd5e04a0cf31f6ee492fddd5f5d8d49"
+    },
+    {
+      "fullpath": ".\\cogs\\WebAPI\\WebBase.py",
+      "MD5": "525d14df2cbee24274c3fdc72ca8b181",
+      "SHA1": "b3cb4e44dbffad0e67d5ce54818af6cc09828209",
+      "SHA256": "bcb04a4ac7dcb838339b83f04f744ee74e637ffd1858ecb827cafbd1358ec7fa"
+    },
+    {
+      "fullpath": ".\\data\\json\\bot_properties.json",
+      "MD5": "45951f63305b50458e07e5af86360900",
+      "SHA1": "0aeffcc32e5386ab3aa46e7648039685cf1bb362",
+      "SHA256": "95a41f4ab7e48598981c191fd8b81c823c8bc32009eb559c0fc2ca841c5f832f"
+    },
+    {
+      "fullpath": ".\\data\\json\\dyn_conf.json",
+      "MD5": "c72851eacd1feec06dc1e8752b082fb2",
+      "SHA1": "50413ecb110d21b472751a135b501491000e6e63",
+      "SHA256": "43b4a14c48a57dce2d4694cdc150c99c96d77d23c1fa0b4bf3179c87bc1afafc"
+    },
+    {
+      "fullpath": ".\\data\\json\\factory.json",
+      "MD5": "fd997e79b7a1526f6122e8de969c11d6",
+      "SHA1": "79851d061d445161a713fa3c3a62a356812f05be",
+      "SHA256": "d25f7f41cbb928a9e6e856473f4915c3b8ac0a8583a4ce23808312823d9ef0e6"
+    },
+    {
+      "fullpath": ".\\data\\json\\json_conf.json",
+      "MD5": "fd2611fae2519606813a243d46683bcc",
+      "SHA1": "03b747be2a153aaeb83eaf072bc573c0096f160d",
+      "SHA256": "326dfb12e7e8ed84c39832699983d54a80ebc9290091584fb9b3fed97dfdb33d"
+    },
+    {
+      "fullpath": ".\\data\\json\\logger_conf.json",
+      "MD5": "43d39976b455c74215f7570fe838dbd1",
+      "SHA1": "a1a1548bc3dc280eca1b5d6ac24e8e26ef91b3e0",
+      "SHA256": "32939c1138ba6ff2301eb8d41dad7e542ca7f095e813e09c2fd54d7bd4676891"
+    },
+    {
+      "fullpath": ".\\data\\json\\tokens.json",
+      "MD5": "73792b9af3fc811b105441cc773526b1",
+      "SHA1": "3dbd0a28528cc971d576c7a6dd2bda7edda4042f",
+      "SHA256": "bac6a76645c48064f198e711301492ace386110831d381f33ba68a3db6847bd4"
+    },
+    {
+      "fullpath": ".\\data\\sys\\.env",
+      "MD5": "c2e8f22148f2f63eabd1fcd3ede0ffe2",
+      "SHA1": "67b0381f30f95a260930570814f6089eb6c10ca6",
+      "SHA256": "af1644209b4ac20639dca738c23ea45aeb8bd4931c7d0f6a805d753411671200"
+    },
+    {
+      "fullpath": ".\\factory\\errors.py",
+      "MD5": "c4caec0be1bd43e87e065faad160e050",
+      "SHA1": "782e37879fd3ce5b5857302f1a5feda814bda049",
+      "SHA256": "a991fcef4051c0e044e2f893d93b873c2bc053beba2e14333e0315bdd9569cde"
+    },
+    {
+      "fullpath": ".\\utils\\crypter.py",
+      "MD5": "2d44eaaccb6725803eed9b3a534d6b60",
+      "SHA1": "3e1ddf6529c6297dec7f26574707c1580d5a0682",
+      "SHA256": "09e31f2d81736453890066ce31ceb7f59dce8820b50709c040ce5b4155f57077"
+    },
+    {
+      "fullpath": ".\\utils\\logger.py",
+      "MD5": "b2677002012bac7677803e3426fb615b",
+      "SHA1": "4a1122cad548c3f03eda9f34c74cc1daac8dad35",
+      "SHA256": "78b51c3b68c45253e35b4d22b97710d486f02e9404c84bbfe2afd290fd652bba"
+    },
+    {
+      "fullpath": ".\\utils\\smartdisnake.py",
+      "MD5": "93302b5ca470cc2bf79975e28204848b",
+      "SHA1": "4e4abddc9f77c7372f219b2b941e04cba5cf3fa6",
+      "SHA256": "9c621b80216a840747d9bb3575805e83774f71df073f160bc546abcb98a142ff"
+    },
+    {
+      "fullpath": ".\\utils\\ujson.py",
+      "MD5": "cb9a831303d80380bdfa6f7c1968f844",
+      "SHA1": "a90a0f336824ff466516a365a0f8b31763431401",
+      "SHA256": "beea8c150277d78ac95a8a4cb3758eb8849cc71c48c15d237f9f00ea829f010f"
+    },
+    {
+      "fullpath": ".\\utils\\DB\\dbmanager.py",
+      "MD5": "1e0417a1b70f2300fc88fed13215fe21",
+      "SHA1": "0c33a43c15714cec2df399c04aef4e7bd6066786",
+      "SHA256": "e2de25ead5bd2f618e11ceeed6330449d93c0161f3c3c0218364309e2f2c6215"
+    },
+    {
+      "fullpath": ".\\utils\\DB\\db_data_types.py",
+      "MD5": "5c53970779ae63f52cf477ad200c426d",
+      "SHA1": "e0afa207eb579ce522751ea75dacfd669f5bdcff",
+      "SHA256": "bfaa598e3e9c2da40d1fa2b72839c601a867bfeb878f75c0792e29ffd57f8078"
+    }
+  ]
+}

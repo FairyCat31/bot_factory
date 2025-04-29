@@ -1,11 +1,22 @@
-from app.utils.ujson import JsonManager
-from app.utils.logger import Logger
 from typing import List, Dict, Coroutine
-from disnake import Embed, ButtonStyle
-from disnake.ext import commands
 from time import time
 import asyncio
 
+from disnake import Embed, ButtonStyle
+from disnake.ext import commands
+
+from app.utils.ujson import JsonManager
+from app.utils.logger import Logger
+
+
+__pyfactory_package__ = {
+    "name": "smartdisnake",
+    "version": "1",
+    "dependencies": {
+        "logger": "1",
+        "ujson": "1"
+    }
+}
 
 BTN_STYLE_MAP = {
     1: ButtonStyle.primary,

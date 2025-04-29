@@ -17,6 +17,13 @@ __all__ = [
 3 - args not set
 4 - unknown procedure
 """
+__pyfactory_package__ = {
+    "name": "main",
+    "version": "1.0",
+    "dependencies": {
+        "bot_manager": "1"
+    }
+}
 
 
 class ArgParser:

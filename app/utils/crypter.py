@@ -1,18 +1,23 @@
+import hashlib
+
+from string import ascii_letters, digits
+from random import randint
+from json import loads, dumps
+from os import urandom
+
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.backends import default_backend
 from cryptography.fernet import Fernet
-from string import ascii_letters, digits
-from json import loads, dumps
-from os import urandom
-import hashlib
-from random import randint
-
 
 
 SYM_IDS = ascii_letters + digits
 SYM_LEN = len(SYM_IDS) - 1
 
+__pyfactory_package__ = {
+    "name": "crypter",
+    "version": "1"
+}
 
 def gen_random_line(len_id: int = 8) -> str:
     result = "".join([SYM_IDS[randint(0, SYM_LEN)] for _ in range(len_id)])

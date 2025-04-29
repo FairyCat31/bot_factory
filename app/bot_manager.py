@@ -1,10 +1,21 @@
+import sys
+
+from dotenv import dotenv_values
+from disnake import Intents
+
 from utils.logger import Logger, PrintHandler, ErrorHandler
 from utils.ujson import JsonManager
 from utils.smartdisnake import SmartBot
-from dotenv import dotenv_values
-from disnake import Intents
-import sys
 
+
+__pyfactory_package__ = {
+    "name": "bot_manager",
+    "version": "1.0",
+    "dependencies": {
+        "smartdisnake": "1",
+        "bot_properties": "1"
+    }
+}
 
 class BotManager:
     def __init__(self, debug_mode: bool = True, advanced_logging: bool = True):

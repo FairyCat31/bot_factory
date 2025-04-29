@@ -1,7 +1,11 @@
 {
+  "__pyfactory_package__": {
+    "name": "bot_properties",
+    "version": "1"
+  },
   "command_prefix": ".",
   "dynamic_config_file_name": "dyn_conf.json",
-  "cogs": ["cogs.Main", "cogs.DynamicConfig"],
+  "cogs": ["cogs.Main", "cogs.DynamicConfig", "cogs.WebAPI.WebBase", "cogs.CLI"],
   "def_phrases": {
     "start" : "Successful starting\nI logged as {user}\nStarting during: {during_time}",
     "FormatErrorDynConfig" : "Ошибка обновления параметра.\\nНе удалось преобразовать {value} в {data_type_need}",
