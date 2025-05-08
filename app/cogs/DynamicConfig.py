@@ -236,23 +236,22 @@ def build(bot: SmartBot):
         # bind decorators from properties
 
         @commands.slash_command(**bot.props["cmds/main_cfg"])
+        @commands.guild_only()
+        @commands.default_member_permissions(administrator=True)
         async def config(self, inter):
             pass
 
         @config.sub_command(**bot.props["cmds/set_cfg"])
-        @commands.default_member_permissions(administrator=True)
         async def config_set(self, inter: ApplicationCommandInteraction,
                              parameter: str = commands.Param(choices=chs_to_set_param),
                              value: str = None):
             await super().config_set_param(inter, parameter, value)
 
         @config.sub_command(**bot.props["cmds/show_cfg"])
-        @commands.default_member_permissions(administrator=True)
         async def config_show(self, inter):
             await super().config_show(inter)
 
         @config.sub_command(**bot.props["cmds/del_cfg"])
-        @commands.default_member_permissions(administrator=True)
         async def config_reset(self, inter,
                                parameter: str = commands.Param(choices=chs_to_del_param)):
             await super().config_reset(inter, parameter)

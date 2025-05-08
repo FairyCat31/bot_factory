@@ -2,6 +2,6 @@
 
 poetry env activate
 export PYTHONPATH=$(pwd)
-poetry run python app/scripts/main.py -launch_bot --name=Test --debug_mode=False --advanced_logging=False
+poetry run python app/scripts/main.py -launch_bot --name=Test
 
 read -p "Press any key..."
