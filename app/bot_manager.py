@@ -1,6 +1,6 @@
 import sys
+from os import environ as env
 
-from dotenv import dotenv_values
 from disnake import Intents
 
 from utils.logger import Logger, PrintHandler, ErrorHandler
@@ -33,7 +33,6 @@ class BotManager:
         self.factory_jsm = JsonManager("factory.json")
         self.bot_properties.load_from_file()
         self.factory_jsm.load_from_file()
-        self.__env_val = dotenv_values(self.factory_jsm[".env"])
 
         self.log.printf(self.factory_jsm["init_bm"])
 
@@ -51,9 +50,6 @@ class BotManager:
         self.log.printf(self.factory_jsm["init_successful_bot"])
 
     def run_bot(self):
-        token = self.__env_val["BOT_TOKEN"]
+        token = env["BOT_TOKEN"]
         self.log.printf(self.factory_jsm["st_bot"])
         self.bot.run(token)
-        print("гооооооооол")
-
-    #def stop_bot
