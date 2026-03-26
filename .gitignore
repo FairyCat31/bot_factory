@@ -4,6 +4,9 @@ env
 venv
 
 .python-version
+.idea
+
+
 /app/data/sys/cert.crt
 /app/data/sys/cert.key
 /app/data/json/.crptjson
