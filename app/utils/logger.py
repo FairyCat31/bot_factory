@@ -8,15 +8,6 @@ from colorama import init, Fore, Style
 from app.utils.ujson import JsonManager
 
 
-__pyfactory_package__ = {
-    "name": "logger",
-    "version": "1",
-    "dependencies": {
-        "logger_conf": "1",
-        "ujson": "1"
-    }
-}
-
 launch_path = sys_path[1]
 
 

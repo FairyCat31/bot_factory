@@ -7,9 +7,6 @@ from typing import Any
 from bot_manager import BotManager
 
 
-__all__ = [
-    "Main"
-]
 """
 0 - all ok
 1 - unknown arg format
@@ -17,13 +14,6 @@ __all__ = [
 3 - args not set
 4 - unknown procedure
 """
-__pyfactory_package__ = {
-    "name": "main",
-    "version": "1.0",
-    "dependencies": {
-        "bot_manager": "1"
-    }
-}
 
 
 class ArgParser:

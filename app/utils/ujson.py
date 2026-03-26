@@ -6,18 +6,9 @@ from os.path import exists
 from pathlib import Path
 
 from json5 import dump as dump5, load as load5
-from dotenv import dotenv_values
 
 from app.utils.crypter import Crypter
 
-
-__pyfactory_package__ = {
-    "name": "ujson",
-    "version": "1",
-    "dependencies": {
-        "crypter": "1"
-    }
-}
 
 PATH_CONFIG_JSON = "app/data/json/json_conf.json"
 launch_path = sys_path[1] + "/"
@@ -173,10 +164,11 @@ class JsonManagerWithCrypt(JsonManager):
 
     def __crypter_init(self, crypt_key: bytes | None) -> Crypter:  # method for creating crypter
         if not crypt_key:
-            env_vars = dotenv_values(self.json_config["env_with_crypt_key"])
-            str_crypt_key = env_vars["DEFAULT_CRYPT_KEY"]
-            crypt_key = str.encode(str_crypt_key, encoding="utf-8")
-            del env_vars, str_crypt_key
+            ...
+            #env_vars = dotenv_values(self.json_config["env_with_crypt_key"])
+            #str_crypt_key = env_vars["DEFAULT_CRYPT_KEY"]
+            #crypt_key = str.encode(str_crypt_key, encoding="utf-8")
+            #del env_vars, str_crypt_key
         crypter = Crypter(crypt_key=crypt_key)
         del crypt_key
         return crypter

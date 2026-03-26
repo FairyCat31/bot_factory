@@ -14,10 +14,6 @@ from cryptography.fernet import Fernet
 SYM_IDS = ascii_letters + digits
 SYM_LEN = len(SYM_IDS) - 1
 
-__pyfactory_package__ = {
-    "name": "crypter",
-    "version": "1"
-}
 
 def gen_random_line(len_id: int = 8) -> str:
     result = "".join([SYM_IDS[randint(0, SYM_LEN)] for _ in range(len_id)])

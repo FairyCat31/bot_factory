@@ -9,15 +9,6 @@ from app.utils.ujson import JsonManager
 from app.utils.smartdisnake import SmartBot
 
 
-__pyfactory_package__ = {
-    "name": "dynamic_config",
-    "version": "1.0",
-    "dependencies": {
-        "smartdisnake": "1",
-        "ujson": "1"
-    }
-}
-
 # subclass for the Dynamic Config Shape
 class ValueConvertor:
     def __init__(self, value_type: str, value: str):

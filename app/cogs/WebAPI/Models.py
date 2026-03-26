@@ -12,16 +12,6 @@ from jwt import (decode as jwt_decode,
 from app.utils.crypter import Hasher, gen_hex_salt, gen_random_line
 
 
-__pyfactory_package__ = {
-    "name": "web_models",
-    "version": "1.0",
-    "dependencies": {
-        "smartdisnake": "1"
-    }
-}
-
-
-
 TOKEN_LIFE = {
     "access_token": 3600,
     "refresh_token": 604800

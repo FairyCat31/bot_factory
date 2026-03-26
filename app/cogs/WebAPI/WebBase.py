@@ -10,16 +10,6 @@ from app.utils.ujson import JsonManager
 from app.cogs.WebAPI.Models import AuthToken, WebSession, Message
 
 
-__pyfactory_package__ = {
-    "name": "web_base",
-    "version": "1.0",
-    "dependencies": {
-        "smartdisnake": "1",
-        "web_models": "1"
-    }
-}
-
-
 class WebBase(commands.Cog):
     def __init__(self, bot: SmartBot, name: str = "API"):
         self.bot = bot

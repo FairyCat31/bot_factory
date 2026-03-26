@@ -9,15 +9,6 @@ from app.utils.ujson import JsonManager
 from app.utils.logger import Logger
 
 
-__pyfactory_package__ = {
-    "name": "smartdisnake",
-    "version": "1",
-    "dependencies": {
-        "logger": "1",
-        "ujson": "1"
-    }
-}
-
 BTN_STYLE_MAP = {
     1: ButtonStyle.primary,
     2: ButtonStyle.secondary,
