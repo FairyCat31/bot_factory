@@ -1,3 +1,2 @@
-#!/bin/bash
 uv run --active --env-file=.env app/main.py -launch_bot --name=Test
-read -p "Press any key..."
+pause
