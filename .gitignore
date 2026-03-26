@@ -1,4 +1,9 @@
-/app/data/sys/.env
+.env
+.venv
+env
+venv
+
+.python-version
 /app/data/sys/cert.crt
 /app/data/sys/cert.key
 /app/data/json/.crptjson
