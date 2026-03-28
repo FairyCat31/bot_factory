@@ -194,10 +194,10 @@ class JsonManager5(JsonManager):
 
     # read all data from file to buffer
     def load(self) -> None:
-        with open(self._path, "r", encoding=self.json_config["encoding"]) as f:
+        with open(self._fullpath, "r", encoding=self.json_config["encoding"]) as f:
             self._buffer = load5(f)
 
     # write all data from buffer to file
     def write(self) -> None:
-        with open(self._path, "w", encoding=self.json_config["encoding"]) as f:
+        with open(self._fullpath, "w", encoding=self.json_config["encoding"]) as f:
             dump5(self._buffer, f, indent=self.json_config["indent"])
