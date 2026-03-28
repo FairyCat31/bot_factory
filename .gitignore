@@ -10,4 +10,4 @@ venv
 /app/data/sys/cert.crt
 /app/data/sys/cert.key
 /app/data/json/.crptjson
-/app/data/logs/*
+cache
