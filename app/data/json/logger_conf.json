@@ -1,7 +1,0 @@
-{
-  "encoding": "utf-8",
-  "default_path": "app/data/logs/",
-  "time_format": "%H:%M:%S",
-  "date_format": "%d-%m-%Y",
-  "msg_format": "{now_time} {name} {log_type} {line}"
-}
