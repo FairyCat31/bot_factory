@@ -6,7 +6,7 @@ from disnake import Embed, ButtonStyle
 from disnake.ext import commands
 
 from app.utils.ujson import JsonManager
-from app.utils.logger import Logger
+from app.utils.logger import logger
 
 
 BTN_STYLE_MAP = {
@@ -26,7 +26,6 @@ class SmartBot(commands.Bot):
         self._async_tasks_for_queue: List[Coroutine] = []
         self.props = JsonManager("bot_properties.json")
         self.props.load_from_file()
-        self.log = Logger(name=name)
         self.async_sub_process_task = None
 
     def add_async_task(self, target: Coroutine) -> None:
@@ -43,7 +42,7 @@ class SmartBot(commands.Bot):
     async def on_ready(self):
         end_time = time()
         delta_time = ((end_time - self.start_time) // 0.0001) / 10000
-        self.log.println(*self.props["def_phrases/start"]
+        logger.info(*self.props["def_phrases/start"]
                          .format(user=self.user, during_time=delta_time)
                          .split("\n"))
         self.async_sub_process_task = asyncio.create_task(self.start_async_tasks())
@@ -53,7 +52,7 @@ class SmartBot(commands.Bot):
     async def on_command_error(self,
                                context: commands.Context,
                                exception: commands.errors.CommandError) -> None:
-        self.log.warn("Ignoring command -> %s" % context.message.content, log_text_in_file=False)
+        logger.warning("Ignoring command -> %s" % context.message.content, log_text_in_file=False)
 
 
 class SmartEmbed(Embed):

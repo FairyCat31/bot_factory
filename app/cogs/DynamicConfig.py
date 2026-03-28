@@ -4,7 +4,7 @@ from functools import wraps as wrapper_func
 from disnake import ApplicationCommandInteraction, Role, Interaction
 from disnake.ext import commands
 
-from app.utils.logger import LogType
+from app.utils.logger import logger
 from app.utils.ujson import JsonManager
 from app.utils.smartdisnake import SmartBot
 
@@ -92,7 +92,7 @@ class DynamicConfigCog(commands.Cog):
                     return
                 output = self.bot.props["def_phrases/RunErrorDynConfig"] % output
                 if echo:
-                    self.bot.log.printf(output, LogType.WARN)
+                    logger.warning(output)
                 if discord_response:
                     inter = kwargs.get("inter")
                     if inter is None or not issubclass(type(inter), Interaction):
@@ -178,7 +178,7 @@ class DynamicConfigCog(commands.Cog):
                 self.bot.props["def_phrases/FormatErrorDynConfig"]
             .format(value=value, data_type_need=data_type_need)
             )
-            self.bot.log.printf(self.bot.props["def_phrases/ConsoleFormatErrorDynConfig"], log_type=LogType.WARN)
+            logger.warning(self.bot.props["def_phrases/ConsoleFormatErrorDynConfig"])
             return
 
         self.dynamic_json[f"{parameter}/value"] = convert_value

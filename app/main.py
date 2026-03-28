@@ -96,12 +96,8 @@ class StartProcedures:
         --name | str
         --debug_mode | bool (Optional)
         --advanced_logging | bool (Optional)"""
-        debug_mode = kwargs.get("debug_mode")
-        advanced_logging = kwargs.get("advanced_logging")
-        if debug_mode is None: debug_mode = False
-        if advanced_logging is None: advanced_logging = False
 
-        bm = BotManager(debug_mode=debug_mode, advanced_logging=advanced_logging)
+        bm = BotManager()
         bm.init_bot(**kwargs)
         bm.run_bot()
 
