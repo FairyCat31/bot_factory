@@ -13,7 +13,7 @@
     },
     file: { // Set level: 51 for disable file log
       level: "INFO", //Levels: trace, debug, info, success, warning, error, critical
-      filepath: "./cache/logs/bot.log", // Template of log filename
+      filepath: "./app/cache/logs/bot.log", // Template of log filename
       rotation: "00:00" , // File rotation (default: daily)
       retention: "1 month", // File retention (default: monthly)
       compression: "tar.gz", // Compression format (default: linux archive)
