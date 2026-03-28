@@ -1,0 +1,9 @@
+.venv
+
+.python-version
+
+run.sh
+run.ps1
+
+app/data/logs
+app/cache

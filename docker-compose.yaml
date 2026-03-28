@@ -1,0 +1,6 @@
+services:
+  dsbot:
+    build: .
+    image: py_factory:latest
+    env_file:
+    - .env
