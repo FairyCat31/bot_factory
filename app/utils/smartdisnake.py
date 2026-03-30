@@ -5,7 +5,7 @@ import asyncio
 from disnake import Embed, ButtonStyle
 from disnake.ext import commands
 
-from app.utils.ujson import JsonManager
+from app.utils.config import load_config, BotConfig
 from app.utils.logger import logger
 
 
@@ -24,8 +24,7 @@ class SmartBot(commands.Bot):
         self.start_time = time()
         self.name = name
         self._async_tasks_for_queue: List[Coroutine] = []
-        self.props = JsonManager("bot_properties.json")
-        self.props.load_from_file()
+        self.cfg: BotConfig = load_config()
         self.async_sub_process_task = None
 
     def add_async_task(self, target: Coroutine) -> None:
@@ -42,9 +41,7 @@ class SmartBot(commands.Bot):
     async def on_ready(self):
         end_time = time()
         delta_time = ((end_time - self.start_time) // 0.0001) / 10000
-        logger.info(*self.props["def_phrases/start"]
-                         .format(user=self.user, during_time=delta_time)
-                         .split("\n"))
+        logger.info(self.cfg.phrases["start"].format(user=self.user, during_time=delta_time))
         self.async_sub_process_task = asyncio.create_task(self.start_async_tasks())
         await self.async_sub_process_task
         await self.stop_async_tasks()

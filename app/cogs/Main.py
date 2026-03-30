@@ -9,12 +9,13 @@ class Main(commands.Cog):
     async def ping(self, inter):
         author = inter.author
         print(author.name, author.nick, author.global_name)
-        await inter.response.send_message(self.bot.props["def_phrases/ping"])
+        await inter.response.send_message(self.bot.cfg.phrases["ping"])
 
 
 def build(bot: SmartBot):
     class BuildMain(Main):
-        @commands.slash_command(**bot.props["cmds/main_ping"])
+        main_cmd = bot.cfg.cmds["main_ping"]
+        @commands.slash_command(name=main_cmd.name, description=main_cmd.description)
         @commands.default_member_permissions(administrator=True)
         async def ping(self, inter):
             await super().ping(inter)

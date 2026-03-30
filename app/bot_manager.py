@@ -1,4 +1,3 @@
-import sys
 from os import environ as env
 
 from disnake import Intents
@@ -6,6 +5,7 @@ from disnake import Intents
 from utils.logger import logger, LogConfiguration, LoggerConfig
 from utils.ujson import JsonManager, JsonManager5
 from utils.smartdisnake import SmartBot
+from utils.config import load_config, BotConfig
 
 
 
@@ -15,9 +15,8 @@ class BotManager:
         self.bot: SmartBot | None = None
 
         # load json files
-        self.bot_properties = JsonManager("bot_properties.json")
+        self.cfg: BotConfig = load_config()
         self.factory_jsm = JsonManager("factory.json")
-        self.bot_properties.load_from_file()
         self.factory_jsm.load_from_file()
 
         logger_jsm = JsonManager5("logger_conf.json5")
@@ -30,10 +29,10 @@ class BotManager:
     def init_bot(self, **kwargs):
         logger.info(self.factory_jsm["init_bot"])
 
-        command_prefix = self.bot_properties["command_prefix"]
+        command_prefix = self.cfg.command_prefix
         intents = Intents.all()
         self.bot = SmartBot(intents=intents, command_prefix=command_prefix, **kwargs)
-        for cog in self.bot_properties["cogs"]:
+        for cog in self.cfg.cogs:
             logger.info(self.factory_jsm["import_cog"].format(cog=cog))
             self.bot.load_extension(cog)
 
