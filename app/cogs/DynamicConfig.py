@@ -11,55 +11,26 @@ from app.utils.smartdisnake import SmartBot
 
 # subclass for the Dynamic Config Shape
 class ValueConvertor:
-    def __init__(self, value_type: str, value: str):
-        self._value_type = value_type
-        self._original_value = value
-        self._convert_value = None
+
+
+    def __init__(self):
+        to_ds_id = lambda v: int(v[2:-1])
+
         self.convert_func_by_type = {
             "STR": str,
             "FLOAT": float,
             "INT": int,
-            "BOOL": self._convert_str_to_bool,
-            "USER": self._convert_discord_obj_to_discord_id,
-            "ROLE": self._convert_discord_role_to_discord_id,
-            "DC_OBJ": self._convert_discord_obj_to_discord_id,
-            "TEXT_CHANNEL": self._convert_discord_obj_to_discord_id
+            "BOOL": lambda v: v.lower() in ["true", "1", "yes", "y"],
+            "USER": to_ds_id,
+            "ROLE": to_ds_id,
+            "DC_OBJ": to_ds_id,
+            "TEXT_CHANNEL": to_ds_id
         }
-        convert_func = self.convert_func_by_type.get(self._value_type)
-        if convert_func is not None:
-            self._convert_value = convert_func(self._original_value)
 
-    @property
-    def convert_value(self) -> Any:
-        return self._convert_value
 
-    # convert methods
-
-    @staticmethod
-    def _convert_str_to_bool(line: str) -> bool:
-        return line.lower() in ["true", "1", "yes", "y"]
-
-    @staticmethod
-    def _convert_discord_obj_to_discord_id(line: str) -> int | None:
-        if len(line) < 4:
-            return
-
-        ds_id = line[2:-1]
-        if not ds_id.isdigit():
-            return
-
-        return int(ds_id)
-
-    @staticmethod
-    def _convert_discord_role_to_discord_id(line: str) -> int | None:
-        if len(line) < 5:
-            return
-
-        ds_id = line[2:-1]
-        if not ds_id.isdigit():
-            return
-
-        return int(ds_id)
+    def convert_value(self, value_type: str, value: str) -> Any:
+        convert_func = self.convert_func_by_type[value_type]
+        return convert_func(value)
 
 
 class DynamicConfigCog(commands.Cog):
