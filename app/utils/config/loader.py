@@ -13,8 +13,8 @@ def load_config(path: str | Path  = ConfigSettings.CONFIG_PATH) -> BotConfig:
     if not path.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        with path.open('w') as f:
+        with path.open('w', encoding=ConfigSettings.ENCODING) as f:
             f.write(ConfigSettings.DEFAULT_CONFIG)
 
-    with path.open('r') as f:
+    with path.open('r', encoding=ConfigSettings.ENCODING) as f:
         return BotConfig.model_validate(load(f))

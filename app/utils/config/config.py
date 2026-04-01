@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field, AnyHttpUrl
 
 from app.utils.logger import LoggerConfig
@@ -42,14 +44,14 @@ class Footer(BaseModel):
 class Embed(BaseModel):
     """Embeds configuration"""
     color: int
-    fields: list[EmbedField] = Field(..., max_length=25)
+    fields: Optional[list[EmbedField]] = Field(..., max_length=25)
     title: str
-    url: AnyHttpUrl
-    image: Image
-    thumbnail: Thumbnail
-    author: Author
-    description: str
-    footer: Footer
+    url: Optional[AnyHttpUrl] = None
+    image: Optional[Image] = None
+    thumbnail: Optional[Thumbnail] = None
+    author: Optional[Author] = None
+    description: Optional[str] = None
+    footer: Optional[Footer] = None
 
 class BotConfig(BaseModel):
     """Root configuration model for the logger"""

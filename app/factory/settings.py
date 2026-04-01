@@ -5,9 +5,10 @@
 
 class ConfigSettings:
     CONFIG_PATH = "app/cache/bot.json5"
+    ENCODING = "utf-8"
     DEFAULT_CONFIG ='''{
   command_prefix: ".",
-  cogs: ["cogs.Main"],
+  cogs: ["cogs.Main", "cogs.DynamicConfigCog"],
   phrases: {
     start : "Successful starting\\nI logged as {user}\\nStarting during: {during_time}",
     FormatErrorDynConfig : "Ошибка обновления параметра.\\nНе удалось преобразовать {value} в {data_type_need}",
@@ -20,6 +21,18 @@ class ConfigSettings:
   buttons: {
   },
   embeds: {
+    dynamic_config_main : {
+      "color": 14491040,
+      "fields": [
+        {
+          "name": "⚙️ Текущие настройки бота ⚙️",
+          "value": "{SettingFields}",
+          "inline": false
+        }
+      ],
+      "title": "ПАНЕЛЬ КОНФИГУРАЦИИ БОТА",
+      "description": "⚠️ **ВНИМАНИЕ** ⚠️ \\nПредварительно ознакомьтесь с документацией, прежде чем редактировать любые значения. Изменение нельзя откатить."
+    }
   },
   modals: {
   },
