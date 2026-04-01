@@ -1,12 +1,14 @@
 from disnake import ApplicationCommandInteraction
 from disnake.ext import commands
 
+from .config import init_cfg, load_cfg, dump_cfg
 from app.utils.smartdisnake import SmartBot, SmartEmbed
 
 
 class DynamicConfigCog(commands.Cog):
     def __init__(self, bot: SmartBot):
         self.bot = bot
+        init_cfg()
 
     async def config(self, inter: ApplicationCommandInteraction):
         embed = SmartEmbed(self.bot.cfg.embeds["dynamic_config_main"].model_dump(exclude_none=True),

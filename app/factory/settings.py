@@ -1,6 +1,20 @@
 
 # bot_manager
 
+# cog/DynamicConfig
+class DynamicConfigSettings:
+    CONFIG_PATH = "app/cache/dynamic_config.json"
+    ENCODING = "utf-8"
+    DEFAULT_CONFIG = {
+        "variables": {
+            "test": {
+                "value": None,
+                "type": "INT",
+                "description": "test value"
+            }
+        }
+    }
+
 # config/config.py
 
 class ConfigSettings:
