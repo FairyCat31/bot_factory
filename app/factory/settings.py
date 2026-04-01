@@ -22,7 +22,7 @@ class ConfigSettings:
     ENCODING = "utf-8"
     DEFAULT_CONFIG ='''{
   command_prefix: ".",
-  cogs: ["cogs.Main", "cogs.DynamicConfigCog"],
+  cogs: ["cogs.Main", "cogs.DynamicConfig"],
   phrases: {
     start : "Successful starting\\nI logged as {user}\\nStarting during: {during_time}",
     FormatErrorDynConfig : "Ошибка обновления параметра.\\nНе удалось преобразовать {value} в {data_type_need}",

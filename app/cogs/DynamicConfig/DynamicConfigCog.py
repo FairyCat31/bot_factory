@@ -9,10 +9,16 @@ class DynamicConfigCog(commands.Cog):
     def __init__(self, bot: SmartBot):
         self.bot = bot
         init_cfg()
+        self.cfg = load_cfg()
+
+
+    def list_vars(self) -> str:
+         return "\n".join([f"- {name} = {var}" for name, var in self.cfg.variables.items()])
+
 
     async def config(self, inter: ApplicationCommandInteraction):
         embed = SmartEmbed(self.bot.cfg.embeds["dynamic_config_main"].model_dump(exclude_none=True),
-                           dyn_vars={"SettingFields": "- hello\n- world"})
+                           dyn_vars={"SettingFields": self.list_vars()})
         await inter.response.send_message("hehe", embed=embed)
 
 
