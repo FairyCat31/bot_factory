@@ -5,7 +5,9 @@ venv
 
 .python-version
 .idea
+__pycache__
 
+*.egg-info
 
 /app/data/sys/cert.crt
 /app/data/sys/cert.key

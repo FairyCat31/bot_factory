@@ -2,12 +2,10 @@ from os import environ as env
 
 from disnake import Intents
 
-from utils.logger import logger, LogConfiguration, LoggerConfig
+from utils.logger import logger
 from utils.ujson import JsonManager, JsonManager5
 from utils.smartdisnake import SmartBot
 from utils.config import load_config, BotConfig
-
-
 
 
 class BotManager:
@@ -18,11 +16,6 @@ class BotManager:
         self.cfg: BotConfig = load_config()
         self.factory_jsm = JsonManager("factory.json")
         self.factory_jsm.load_from_file()
-
-        logger_jsm = JsonManager5("logger_conf.json5")
-        logger_jsm.load()
-        LogConfiguration(LoggerConfig.model_validate(logger_jsm.buffer)).setup()
-        
 
         logger.info(self.factory_jsm["init_bm"])
 

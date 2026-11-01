@@ -1,4 +1,4 @@
-from app.utils.logger.config import LoggerConfig
-from app.utils.logger.logger import logger, LogConfiguration
+from utils.logger.config import LoggerConfig
+from utils.logger.logger import logger, setup
 
-__all__ = ["LoggerConfig", "logger", "LogConfiguration"]
+__all__ = ["LoggerConfig", "logger", "setup"]

@@ -4,9 +4,9 @@ from functools import wraps as wrapper_func
 from disnake import ApplicationCommandInteraction, Role, Interaction
 from disnake.ext import commands
 
-from app.utils.logger import logger
-from app.utils.ujson import JsonManager
-from app.utils.smartdisnake import SmartBot
+from utils.logger import logger
+from utils.ujson import JsonManager
+from utils.smartdisnake import SmartBot
 
 
 # subclass for the Dynamic Config Shape
