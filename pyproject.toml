@@ -1,6 +1,6 @@
 [project]
 name = "bot-factory"
-version = "0.1.4"
+version = "0.1.5"
 description = "Core for the creating discord bot, which is based on Disnake"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -12,3 +12,15 @@ dependencies = [
     "pydantic>=2.12.5",
     "rich>=14.3.3",
 ]
+
+[tool.setuptools]
+package-dir = {"" = "app"}
+
+[tool.setuptools.packages.find]
+where = ["app"]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+bot = "main:main"

@@ -5,8 +5,8 @@ import asyncio
 from disnake import Embed, ButtonStyle
 from disnake.ext import commands
 
-from app.utils.ujson import JsonManager
-from app.utils.logger import logger
+from utils.ujson import JsonManager
+from utils.logger import logger
 
 
 BTN_STYLE_MAP = {

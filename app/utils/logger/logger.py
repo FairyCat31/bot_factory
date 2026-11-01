@@ -3,7 +3,7 @@ from pathlib import Path
 from rich.console import Console
 import loguru
 
-from app.utils.logger import LoggerConfig
+from utils.logger import LoggerConfig
 
 
 logger = loguru.logger

@@ -15,6 +15,9 @@ from bot_manager import BotManager
 4 - unknown procedure
 """
 
+start_func = []
+func_args = []
+
 
 class ArgParser:
     def __init__(self):
@@ -171,20 +174,16 @@ class StartProcedures:
         jsm.buffer = b
         jsm.write_in_file()
 
-class Main:
-    def __init__(self):
-        self.start_func = []
-        self.func_args = []
 
-    def main(self):
-        arg_parser = ArgParser()
-        arg_parser.parse_args(self, StartProcedures)
-        if arg_parser.code:
-            raise FactoryStartArgumentError(arg_parser.code, arg_parser.error_arg)
-        for i in range(len(self.func_args)):
-            self.start_func[i](**self.func_args[i])
+def main():
+    # arg_parser = ArgParser()
+    # arg_parser.parse_args(StartProcedures)
+    # if arg_parser.code:
+    #     raise FactoryStartArgumentError(arg_parser.code, arg_parser.error_arg)
+    # for i in range(len(func_args)):
+    #     start_func[i](**func_args[i])
+    StartProcedures.launch_bot(name="Test")
 
 
 if __name__ == "__main__":
-    m = Main()
-    m.main()
+    main()

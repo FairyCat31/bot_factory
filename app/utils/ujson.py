@@ -7,11 +7,10 @@ from pathlib import Path
 
 from json5 import dump as dump5, load as load5
 
-from app.utils.crypter import Crypter
+from utils.crypter import Crypter
 
 
-PATH_CONFIG_JSON = "app/data/json/json_conf.json"
-launch_path = sys_path[1] + "/"
+PATH_CONFIG_JSON = "data/json/json_conf.json"
 
 
 class AddressType:
@@ -47,13 +46,13 @@ class JsonManager:
             smart_create: create file if it not exists
         """
         # load config for JsonManager in file json_conf.json
-        with open(launch_path + PATH_CONFIG_JSON, "r") as f:
+        with open(PATH_CONFIG_JSON, "r") as f:
             self.json_config = load(f)
 
         # set path and name file
         if address_type:
             self._name = address
-            self._path = launch_path + self.json_config[address_type]
+            self._path = self.json_config[address_type]
 
         else:
             self._path = "\\".join(address.split("/")[:-1])
