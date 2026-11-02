@@ -1,0 +1,22 @@
+{
+  "main_cfg": {
+    "name": "config",
+    "description": "Команда для настройки бота"
+  },
+  "set_cfg": {
+    "name": "set",
+    "description": "Изменить настройки бота"
+  },
+  "del_cfg": {
+    "name": "reset",
+    "description": "Сбросить настройки/настройку бота"
+  },
+  "show_cfg": {
+    "name": "show",
+    "description": "Показать настройки бота"
+  },
+  "main_ping": {
+    "name": "ping",
+    "description": "Проверка ответа от бота"
+  }
+}

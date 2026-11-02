@@ -1,6 +1,4 @@
-from pydantic import BaseModel, Field, AnyHttpUrl
-
-from app.utils.logger import LoggerConfig
+from pydantic import BaseModel, Field, AnyHttpUrl, RootModel
 
 
 class SlashCommand(BaseModel):
@@ -8,11 +6,14 @@ class SlashCommand(BaseModel):
     name: str
     description: str
 
+
 class Modal(BaseModel):
     """Modal configuration"""
 
+
 class Button(BaseModel):
     """Buttons configuration"""
+
 
 # --- Embed ---
 class EmbedField(BaseModel):
@@ -21,23 +22,28 @@ class EmbedField(BaseModel):
     value: str
     inline: bool
 
+
 class Image(BaseModel):
     """Image configuration"""
     url: AnyHttpUrl
 
+
 class Thumbnail(BaseModel):
     """Thumbnail configuration"""
     url: AnyHttpUrl
-    
+
+
 class Author(BaseModel):
     """Author configuration"""
     name: str
     icon_url: AnyHttpUrl
 
+
 class Footer(BaseModel):
     """Footer configuration"""
     text: str
     icon_url: AnyHttpUrl
+
 
 class Embed(BaseModel):
     """Embeds configuration"""
@@ -51,13 +57,27 @@ class Embed(BaseModel):
     description: str
     footer: Footer
 
-class BotConfig(BaseModel):
-    """Root configuration model for the logger"""
-    command_prefix: str
-    cogs: list[str]
-    phrases: dict[str, str]
-    buttons: dict[str, Button]
-    embeds: dict[str, Embed]
-    modals: dict[str, Modal]
-    cmds: dict[str, SlashCommand]
-    logger: LoggerConfig
+
+class Embeds(RootModel[dict[str, Embed]]):
+    """Embeds configuration"""
+    ...
+
+
+class Modals(RootModel[dict[str, Modal]]):
+    """Modals configuration"""
+    ...
+
+
+class Buttons(RootModel[dict[str, Button]]):
+    """Buttons configuration"""
+    ...
+
+
+class Commands(RootModel[dict[str, SlashCommand]]):
+    """Slash commands configuration"""
+    ...
+
+
+class Phrases(RootModel[dict[str, str]]):
+    """Phrases configuration"""
+    ...

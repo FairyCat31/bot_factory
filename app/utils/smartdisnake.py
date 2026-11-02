@@ -5,7 +5,7 @@ import asyncio
 from disnake import Embed, ButtonStyle
 from disnake.ext import commands
 
-from utils.config import load_config, BotConfig
+from config import load_config, BotConfig
 from utils.logger import logger
 
 

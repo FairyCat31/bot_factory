@@ -3,9 +3,9 @@ from os import environ as env
 from disnake import Intents
 
 from utils.logger import logger
-from utils.ujson import JsonManager, JsonManager5
+from utils.ujson import JsonManager
 from utils.smartdisnake import SmartBot
-from utils.config import load_config, BotConfig
+from config import load_config, BotConfig
 
 
 class BotManager:
