@@ -1,37 +1,26 @@
 from os import environ as env
 
-from disnake import Intents
-
-from utils.logger import logger
-from utils.ujson import JsonManager
+from logger import logger
+from settings import command_prefix, intents, cogs
 from utils.smartdisnake import SmartBot
-from config import load_config, BotConfig
 
 
 class BotManager:
     def __init__(self):
         self.bot: SmartBot | None = None
-
-        # load json files
-        self.cfg: BotConfig = load_config()
-        self.factory_jsm = JsonManager("factory.json")
-        self.factory_jsm.load_from_file()
-
-        logger.info(self.factory_jsm["init_bm"])
+        self.log = logger.bind(component="BotManager")
+        self.log.info("Successful initialization of Bot manager")
 
     def init_bot(self, **kwargs):
-        logger.info(self.factory_jsm["init_bot"])
-
-        command_prefix = self.cfg.command_prefix
-        intents = Intents.all()
+        self.log.info("Start to initialize a bot")
         self.bot = SmartBot(intents=intents, command_prefix=command_prefix, **kwargs)
-        for cog in self.cfg.cogs:
-            logger.info(self.factory_jsm["import_cog"].format(cog=cog))
-            self.bot.load_extension(cog)
+        for cog in cogs:
+            self.log.info(f"Import '{cog}' to bot")
+            self.bot.load_extension(f"cogs.{cog}")
 
-        logger.info(self.factory_jsm["init_successful_bot"])
+        self.log.info("Successful initialization of bot")
 
     def run_bot(self):
         token = env["BOT_TOKEN"]
-        logger.info(self.factory_jsm["st_bot"])
+        logger.info("Starting bot...")
         self.bot.run(token)
