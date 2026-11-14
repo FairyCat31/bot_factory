@@ -8,8 +8,8 @@ from utils.smartdisnake import SmartBot
 class BotManager:
     def __init__(self):
         self.bot: SmartBot | None = None
-        self.log = logger.bind(component="BotManager")
-        self.log.info("Successful initialization of Bot manager")
+        self.log = logger.bind(component="manager")
+        self.log.success("Successful initialization of Bot manager")
 
     def init_bot(self, **kwargs):
         self.log.info("Start to initialize a bot")
@@ -18,7 +18,7 @@ class BotManager:
             self.log.info(f"Import '{cog}' to bot")
             self.bot.load_extension(f"cogs.{cog}")
 
-        self.log.info("Successful initialization of bot")
+        self.log.success("Successful initialization of bot")
 
     def run_bot(self):
         token = env["BOT_TOKEN"]

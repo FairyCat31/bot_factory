@@ -42,7 +42,7 @@ class SmartBot(commands.Bot):
     async def on_ready(self):
         end_time = time()
         delta_time = ((end_time - self.start_time) // 0.0001) / 10000
-        self.log.info(f"Successful starting. I logged as {self.user}. Starting during: {delta_time}")
+        self.log.success(f"Successful starting. I logged as {self.user}. Starting during: {delta_time}")
 
         self.async_sub_process_task = asyncio.create_task(self.start_async_tasks())
         await self.async_sub_process_task
