@@ -1,5 +1,6 @@
-from .config import BotConfig
-from .loader import load_config
+from .configs import (
+    configs,
+    Configs
+)
 
-
-__all__ = [ "BotConfig", "load_config"]
+__all__ = ["configs", "Configs"]
