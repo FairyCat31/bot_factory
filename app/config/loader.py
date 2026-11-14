@@ -6,5 +6,5 @@ from pydantic import BaseModel
 
 
 def load_config[T: BaseModel](path: Path, model: Type[T]) -> T:
-    with path.open('r') as f:
+    with path.open('r', encoding="utf-8") as f:
         return model.model_validate(load(f))
