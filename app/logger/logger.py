@@ -1,14 +1,14 @@
 from rich.console import Console
 import loguru
 
-from utils.logger import LoggerConfig
+from logger import LoggerConfig
 
 
 logger = loguru.logger
 output = Console()
 
 
-def setup(config: LoggerConfig) -> None:
+def setup_logger(config: LoggerConfig) -> None:
     logger.remove()
 
     rich_sink = lambda msg: output.print(msg, end="")
