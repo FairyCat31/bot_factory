@@ -21,11 +21,10 @@ BTN_STYLE_MAP = {
 class SmartBot(commands.Bot):
     def __init__(self, name: str, **kwargs):
         super().__init__(intents=kwargs["intents"], command_prefix=kwargs["command_prefix"])
-        self.start_time = time()
         self.name = name
         self._async_tasks_for_queue: List[Coroutine] = []
         self.cfg: Configs = configs
-        self.log = logger.bind(name="Bot")
+        self.log = logger.bind(component="Bot")
         self.async_sub_process_task = None
 
     def add_async_task(self, target: Coroutine) -> None:
@@ -40,9 +39,7 @@ class SmartBot(commands.Bot):
             self.async_sub_process_task.cancel()
 
     async def on_ready(self):
-        end_time = time()
-        delta_time = ((end_time - self.start_time) // 0.0001) / 10000
-        self.log.success(f"Successful starting. I logged as {self.user}. Starting during: {delta_time}")
+        self.log.success(f"I logged as {self.user}")
 
         self.async_sub_process_task = asyncio.create_task(self.start_async_tasks())
         await self.async_sub_process_task

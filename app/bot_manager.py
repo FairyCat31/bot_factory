@@ -1,4 +1,6 @@
+import asyncio
 from os import environ as env
+from time import perf_counter
 
 from logger import logger
 from settings import command_prefix, intents, cogs
@@ -20,7 +22,15 @@ class BotManager:
 
         self.log.success("Successful initialization of bot")
 
-    def run_bot(self):
+    async def start_timer(self):
+        start_time = perf_counter()
+        await self.bot.wait_until_ready()
+        elapsed_time = perf_counter() - start_time
+        self.log.success(f"Bot has successfully started up! (elapsed: {elapsed_time:.2f}s)")
+
+
+    async def run_bot(self):
         token = env["BOT_TOKEN"]
-        logger.info("Starting bot...")
-        self.bot.run(token)
+        self.log.info("Starting bot...")
+        asyncio.create_task(self.start_timer())
+        await self.bot.start(token)
