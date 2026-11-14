@@ -4,7 +4,7 @@ import loguru
 from logger import LoggerConfig
 
 
-logger = loguru.logger
+logger = loguru.logger.bind(component="global")
 output = Console()
 
 
