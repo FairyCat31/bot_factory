@@ -1,6 +1,4 @@
-from typing import List, Dict, Coroutine
-from time import time
-import asyncio
+from typing import List, Dict
 
 from disnake import Embed, ButtonStyle
 from disnake.ext import commands
@@ -19,31 +17,13 @@ BTN_STYLE_MAP = {
 
 # main class of bot
 class SmartBot(commands.Bot):
-    def __init__(self, name: str, **kwargs):
-        super().__init__(intents=kwargs["intents"], command_prefix=kwargs["command_prefix"])
-        self.name = name
-        self._async_tasks_for_queue: List[Coroutine] = []
+    def __init__(self, intents, command_prefix):
+        super().__init__(intents=intents, command_prefix=command_prefix)
         self.cfg: Configs = configs
         self.log = logger.bind(component="Bot")
-        self.async_sub_process_task = None
-
-    def add_async_task(self, target: Coroutine) -> None:
-        self._async_tasks_for_queue.append(target)
-
-    async def start_async_tasks(self):
-        await asyncio.gather(*self._async_tasks_for_queue)
-
-    async def stop_async_tasks(self):
-        if self.async_sub_process_task is not None:
-            await asyncio.sleep(10)
-            self.async_sub_process_task.cancel()
 
     async def on_ready(self):
-        self.log.success(f"I logged as {self.user}")
-
-        self.async_sub_process_task = asyncio.create_task(self.start_async_tasks())
-        await self.async_sub_process_task
-        await self.stop_async_tasks()
+        self.log.info(f"I logged as {self.user}")
 
     async def on_command_error(self,
                                context: commands.Context,

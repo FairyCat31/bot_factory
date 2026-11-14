@@ -9,7 +9,7 @@ def main():
     configs.load()
     setup_logger(configs.logger)
     bm = BotManager()
-    bm.init_bot(name="test")
+    bm.init_bot()
     asyncio.run(bm.run_bot())
 
 

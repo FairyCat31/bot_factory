@@ -9,13 +9,13 @@ from utils.smartdisnake import SmartBot
 
 class BotManager:
     def __init__(self):
-        self.bot: SmartBot | None = None
+        self.bot: SmartBot = SmartBot(intents=intents, command_prefix=command_prefix)
         self.log = logger.bind(component="manager")
         self.log.success("Successful initialization of Bot manager")
 
-    def init_bot(self, **kwargs):
+    def init_bot(self):
         self.log.info("Start to initialize a bot")
-        self.bot = SmartBot(intents=intents, command_prefix=command_prefix, **kwargs)
+
         for cog in cogs:
             self.log.info(f"Import '{cog}' to bot")
             self.bot.load_extension(f"cogs.{cog}")
