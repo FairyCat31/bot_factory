@@ -75,8 +75,9 @@ class Buttons(RootModel[dict[str, Button]]):
 
 class Commands(RootModel[dict[str, SlashCommand]]):
     """Slash commands configuration"""
-    ...
 
+    def __getitem__(self, item: str) -> SlashCommand:
+        return self.root[item]
 
 class Phrases(RootModel[dict[str, str]]):
     """Phrases configuration"""

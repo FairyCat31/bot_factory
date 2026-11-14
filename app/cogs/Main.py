@@ -14,7 +14,7 @@ class Main(commands.Cog):
 
 def build(bot: SmartBot):
     class BuildMain(Main):
-        main_cmd = bot.cfg.cmds["main_ping"]
+        main_cmd = bot.cfg.commands["main_ping"]
         @commands.slash_command(name=main_cmd.name, description=main_cmd.description)
         @commands.default_member_permissions(administrator=True)
         async def ping(self, inter):
